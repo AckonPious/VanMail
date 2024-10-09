@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard</title>
+
+    {% include 'components/css.html' %}
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar1 -->
+            {% include 'components/sidebar.html' %}
+           
+
+        <!-- End of Sidebar1 -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                {% include 'components/navbar.html' %}
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2>Update {{mailbox.mail_id}}</h2>
+                                <div class="d-flex">
+                                    <div>
+                                        <img src="{% static 'asset/img/bg.png' %}" alt="Step 1">
+                                    </div>
+                                    <div>
+                                        <img src="{% static 'asset/img/bg(1).png' %}" alt="Step 2">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12" style="height: 80vh; background-color: rgb(215,229,229);">
+                            <div>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    {{form.as_p}}
+                                    <input type="submit" value="Update MailBox" class="btn btn-primary mt-2">
+                                </form>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    {% include 'components/js.html' %}
+    
+</body>
+
+</html>

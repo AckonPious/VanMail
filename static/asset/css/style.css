@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #ececec;
+    overflow: hidden;
+}
+
+.custom-button {
+    background-color: #6B6B6B;
+    color: whitesmoke;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+.custom-button:hover {
+    background-color: rgb(64, 107, 99);
+    color: whitesmoke;
+}
+
+.right-box {
+    padding: 40px 30px 40px 40px;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.left-box {
+    height: 100vh;
+   
+}
+
+.left-box img {
+    height: 96vh;
+    width: auto;
+}
+
+::placeholder {
+    font-size: 16px;
+    padding: 2px;
+}
+
+.rounded-4 {
+    border-radius: 20px;
+}
+
+.rounded-5 {
+    border-radius: 30px;
+}
+
+@media only screen and (max-width: 768px) {
+    .left-box {
+        height: 30vh;
+        overflow: hidden;
+    }
+
+    .right-box {
+        padding: 20px;
+        height: 60vh;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    .left-box {
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .left-box img {
+        height: 96vh;
+    }
+
+    .right-box {
+        padding: 20px;
+        margin-top: 100px;
+    }
+}
+
+
+@media (min-width: 993px) and (max-width: 1600px) {
+    .left-box {
+        height: 100vh;
+    }
+
+    .left-box img {
+        height: 96vh;
+    }
+
+    .right-box {
+        padding: 40px;
+        margin-top: 100px;
+    }
+}
+
+@media (min-width: 16000px) {
+    .left-box {
+        height: 100vh;
+    }
+
+
+    .right-box {
+        padding: 40px;
+        margin-top: 100px;
+    }
+}

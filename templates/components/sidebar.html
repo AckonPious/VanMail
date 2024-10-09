@@ -1,0 +1,156 @@
+{% load static %}
+{% load custom_tags %}
+<ul class="navbar-nav bg-light sidebar sidebar-dark accordion" id="accordionSidebar">
+
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'dashboard' %}">
+        <img src="{% static 'asset/img/Profil.png' %}" alt="">
+    </a>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-2 custom-hr">
+
+    <!-- Nav Item - Dashboard -->
+    <li class="nav-item ">
+        <a class="nav-link" href="{% url 'dashboard' %}">
+            <i class="fas fa-home fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">Dashboard</span></a>
+    </li>
+
+    {% if request.user.is_authenticated and request.user.is_admin %}
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Users"
+            aria-expanded="true" aria-controls="Users">
+            <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">Users</span>
+        </a>
+        <div id="Users" class="collapse" aria-labelledby="Users" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
+                <a class="collapse-item" href="{% url 'create_user' %}">Add User</a>
+                <a class="collapse-item" href="{% url 'users' %}">All Users</a>
+            </div>
+        </div>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#location"
+            aria-expanded="true" aria-controls="location">
+            <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">location</span>
+        </a>
+        <div id="location" class="collapse" aria-labelledby="location" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
+                <a class="collapse-item" href="{% url 'create_location' %}">Add Location</a>
+                <a class="collapse-item" href="{% url 'locations' %}">All Location</a>
+            </div>
+        </div>
+    </li>
+    {% endif %}
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#driver"
+            aria-expanded="true" aria-controls="driver">
+            <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">driver</span>
+        </a>
+        <div id="driver" class="collapse" aria-labelledby="driver" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
+                <a class="collapse-item" href="{% url 'create_driver' %}">Add Drivers</a>
+                <a class="collapse-item" href="{% url 'drivers' %}">All Drivers</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+            aria-expanded="true" aria-controls="collapseTwo">
+            <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">Add New Mail</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
+                <a class="collapse-item" href="{% url 'mail_boxes'  %}">View Mail Box</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Utilities Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+            aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">Manage Mails</span>
+        </a>
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
+                <a class="collapse-item" href="{% url 'mail_summary' request.user.location.pk %}">View Summary</a>
+                {% get_locations as locations %}
+                {% for location in locations %}
+                    <a class="collapse-item" href="{% url 'manage_mails' location.pk %}">{{ location.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+            aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">Recieve Mails</span>
+        </a>
+        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
+                <a class="collapse-item" href="{% url 'receive_mail'  %}">view Received mails</a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRA"
+            aria-expanded="true" aria-controls="collapseRA">
+            <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">Report & Analytic</span>
+        </a>
+        <div id="collapseRA" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
+                <a class="collapse-item" href="login.html">Login</a>
+                <a class="collapse-item" href="register.html">Register</a>
+                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-2 custom-hr">
+
+    <!-- Nav Item - Help -->
+    <li class="nav-item">
+        <a class="nav-link" href="charts.html">
+            <i class="far fa-question-circle fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">Help</span></a>
+    </li>
+
+    <!-- Nav Item - settings-->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#settings"
+            aria-expanded="true" aria-controls="settings">
+            <i class="fas fa-cog fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">Settings</span>
+        </a>
+        <div id="settings" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
+                <a class="collapse-item" href="login.html">Login</a>
+                <a class="collapse-item" href="register.html">Register</a>
+                <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - logout-->
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'logout' %}">
+            <i class="fas fa-sign-out-alt fa-lg" style="color: rgba(119, 6, 6, 0.99);"></i>
+            <span style="color: rgba(119, 6, 6, 0.99);">Logout Account</span></a>
+    </li>
+</ul>

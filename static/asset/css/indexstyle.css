@@ -1,0 +1,32 @@
+
+.sidebar-divider.custom-hr {
+    height: 3px !important;
+    background-color: #e1dcdc !important;        
+}
+
+#accordionSidebarRight {
+    top: 0; 
+    z-index: 1; 
+}
+
+.mail-count {
+    margin-left: 50px; /* Adjust the space as needed */
+}
+
+.dev{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+.dev-item{
+    width: 100%;
+    height: 30vh;
+    padding-left: 10px;
+    margin-top: 15px;
+}
+
+.dev.dev-item, h4 {
+    color: #3F4753;
+    font-size: 17px;
+}

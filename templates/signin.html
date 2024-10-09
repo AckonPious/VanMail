@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    {% include 'components/css.html' %}
+</head>
+<style>
+    .custom-input {
+        height: 45px; 
+        padding: 10px; 
+        font-size: 16px; 
+        border-radius: 12px;
+        background: #F5F5F5;
+        border: none;
+        
+    }
+
+    
+    
+    .custom-input::placeholder {
+        padding-left: 10px; 
+        font-style: italic; 
+        color: #888; 
+    }
+
+    .custom-button {
+        width: 100%; 
+        height: 50px; 
+        font-size: 16px; 
+        border-radius: 5px; 
+        background-color: #CFD1D4;
+        transition: background-color 0.3s;
+        border-radius: 12px;
+    }
+
+    .custom-button:hover {
+        background-color: #008080; 
+        color: white;
+    }
+
+    .welcome-message {
+        position: absolute;
+        top: 110px; /* Adjust this value to position the text */
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 24px; /* Adjust font size as needed */
+        font-weight: bold;
+        color: white; /* Change text color for visibility */
+        text-align: center;
+    }
+</style>
+
+<body>
+    
+    <div class="row">
+        <div class="col-12">
+            <div style="position: relative; border-radius: 0 0 30px 30px; overflow: hidden;">
+                <!-- Background Image -->
+                <img src="{% static 'asset/img/Image.png' %}" alt="image" style="object-fit: cover; height: 50vh; width: 100%;">
+
+                <div class="welcome-message">Mail Coureir App</div>
+            </div>
+            <div class="card-overlay" style="
+                    position: absolute;
+                    top: 550px;
+                    left: 50%;
+                    transform: translate(-50%, -50%) scale(1.00);
+                    background-color: #FFF;
+                    padding: 50px;
+                    border-radius: 10px;
+                    width: 550px;
+                    box-shadow: 0px 7px 23px 0px rgba(0, 0, 0, 0.05); 
+                    transition: all 0.3s ease-in-out;
+                    height: 580px; ">
+                    
+                    {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <h2  style="text-align: center; margin-bottom: 16px; margin-top: 35px; color: #008080; font-family: 'Nunito'; font-size: 35px; line-height: 40px; font-weight: 600; font-style: normal;">Sign In Account</h2>
+                        <p class="mb-3" style="text-align: center;  font-family: 'Nunito Sans'; color: #4B4B4B; font-style: normal; font-weight: 400; line-height: 24px; letter-spacing: 1px;" >Enter your personal data to create your account</p>
+                        
+                        <div class="form-group mb-4">
+                            <label for="username" style="margin-top: 30px; color: #111; font-size: 16px; font-weight: 600;">Username</label>
+                            <input type="text" id="username" class="form-control custom-input" name= "username" placeholder="Enter your username" required>
+                        </div>
+                        
+                        <div class="form-group mb-5">
+                            <label for="password" style="color: #111; font-size: 16px; font-weight: 600;">Password</label>
+                        
+                            <div class="input-group">
+                                <input type="password" id="password" class="form-control custom-input" name="password" placeholder="Type your password" required 
+                                >
+                                <!-- Image inside the input field -->
+                                <span class="input-group-text" style="background-color: #F5F5F5; border: none;">
+                                    <img src="{% static 'asset/img/hidden.png' %}" id="hiddenicon"
+                                        style="cursor: pointer; width: 20px; height: auto; border-radius: 12px">
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn custom-button">Continue</button>
+                    </form>
+                </div>
+        </div>
+    </div>
+
+    {% include 'components/js.html' %}
+    <script>
+        let hiddenicon = document.getElementById("hiddenicon");
+        let password = document.getElementById("password");
+
+        hiddenicon.onclick = function () {
+            if (password.type == "password") {
+                password.type = "text";
+                hiddenicon.src = "{% static 'asset/img/eye.png' %}";
+            } else {
+                password.type = "password";
+                hiddenicon.src = "{% static 'asset/img/hidden.png' %}";
+            }
+        }
+    </script>
+</body>
+</html>
