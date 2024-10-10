@@ -10,17 +10,18 @@ class UserCreateForm(UserCreationForm):
         model = User
         fields = ['username', 'is_admin', 'is_registry', 'email', 'full_name', 'location','password1', 'password2']
         
+
+class MailBoxForm(forms.ModelForm):
+    class Meta:
+        model = MailBox
+        fields = ['mail_id', 'handling_officer', 'to_location', 'remarks']
         
 
 class FinalSubmissionForm(ModelForm):
     class Meta:
         model = MailBox
         fields = ['assigned_to']
-        
-        
-
-
-            
+                   
 class MailReceiveForm(forms.Form):
     mails = forms.ModelMultipleChoiceField(
         queryset=Mail.objects.none(),

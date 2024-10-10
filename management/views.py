@@ -23,6 +23,7 @@ class CreateUser(CreateView):
     template_name = 'authentication/create_user.html'
     form_class = UserCreateForm
     success_url = reverse_lazy('users')
+    
 
 @method_decorator([login_required, admin_required], name='dispatch')
 class UserListView(ListView):
@@ -117,7 +118,7 @@ class DriverUpdateView(UpdateView):
 @method_decorator([login_required, registry_required], name='dispatch')
 class AddNewMailBoxView(LoginRequiredMixin, CreateView):
     model = MailBox
-    fields = ['mail_id', 'handling_officer', 'to_location', 'remarks']
+    form_class = MailBoxForm
     template_name = 'mail/new_mailbox.html'
 
     def get_initial(self):

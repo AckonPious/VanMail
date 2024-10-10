@@ -12,6 +12,43 @@
 
     {% include 'components/css.html' %}
 
+    <style>
+        .form-control:disabled, .form-control[readonly] {
+          background-color: #f8f9fa;
+          opacity: 1;
+        }
+        .form-label{
+            color: #3F4753;
+            font-weight: 600;
+        
+        }
+
+        .form-control{
+
+        }
+
+        .form-container{
+            margin-top: 90px;
+        }
+
+        .btn{
+            background-color: #008080;
+            padding: 10px 18px;
+            justify-content: center; 
+            align-items: center; 
+            border-radius: 14px; 
+            color: white; 
+            font-family: 'Nunito Sans'; 
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background-color: #007070;
+            color: white; 
+            text-decoration: none; 
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -20,8 +57,6 @@
     <div id="wrapper">
         <!-- Sidebar1 -->
             {% include 'components/sidebar.html' %}
-           
-
         <!-- End of Sidebar1 -->
 
         <!-- Content Wrapper -->
@@ -50,18 +85,51 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12" style="height: 80vh; background-color: rgb(215,229,229); padding: 140px;">
+                        <div class="col-10" style="height: 80vh; background-color: rgb(215,229,229); padding-left: 200px; padding-right: 200px">
                             <form action="" method="post">
                                 {% csrf_token %}
-                                
-                                {{form.as_p}}
-                                <input type="submit" value="Create MailBox" class="btn btn-primary mt-2">
-                            </form>
+                                <div class="form-container">
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-lg-6">
+                                            <label for="mail_id" class="form-label">Mail Bag Id</label>
+                                            <input type="text" class="form-control" id="mail_id" name="mail_id" value="{{ form.mail_id.value|default_if_none:'' }}" style="height: 50px; border-radius: 14px;" readonly>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <label for="handling_officer" class="form-label">Handling Officer's Name</label>
+                                            <input type="text" class="form-control" id="handling_officer" name="handling_officer" value="{{ form.handling_officer.value|default_if_none:'' }}" placeholder="David Annan" style="height: 50px; border-radius: 14px;" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-lg-6">
+                                            <label for="dispatch_date" class="form-label">Dispatch Date</label>
+                                            <input type="date" class="form-control" id="dispatch_date" name="dispatch_date" value="{{ form.dispatch_date.value|default_if_none:'' }}" style="height: 50px; border-radius: 14px;" required>
+                                        </div>
+                                        <div class="col-12 col-lg-6">
+                                            <label for="to_location" class="form-label">To Location</label>
+                                            <select class="form-select" id="to_location" name="to_location" style="height: 50px; border-radius: 14px;">
+                                                {% for location in form.to_location.field.queryset%}
+                                                <option value="{{ location.id }}">{{ location.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <label for="remarks" class="form-label">Remarks (Recall)</label>
+                                            <textarea class="form-control" id="remarks" name="remarks" rows="8" placeholder="Enter a description..." style="border-radius: 14px;">{{ form.remarks.value|default_if_none:'' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12 text-end">
+                                            <input type="submit" value="Proceed to Next Page" class="btn mt-2">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>                            
                         </div>
                     </div>
                     </div>
                 </div>
-                <!-- /.container-fluid -->
             </div>
             </div>
         </div>
