@@ -16,6 +16,16 @@ class MailBoxForm(forms.ModelForm):
         model = MailBox
         fields = ['mail_id', 'handling_officer', 'to_location', 'remarks']
         
+class MailsForm(forms.ModelForm):
+    class Meta:
+        model = Mail
+        fields = ['individual_mail_id', 'mail_description', 'priority_level']
+        
+class DriverForm(forms.ModelForm):
+    class Meta:
+        model = AssignedTo
+        fields = ['name', 'phone_number']
+        
 
 class FinalSubmissionForm(ModelForm):
     class Meta:

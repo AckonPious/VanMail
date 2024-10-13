@@ -17,10 +17,14 @@
           background-color: #f8f9fa;
           opacity: 1;
         }
-        .form-label{
+
+        .custom-label{
             color: #3F4753;
+            font-family: "Nunito Sans";
+            font-size: 17px;
+            font-style: normal;
             font-weight: 600;
-        
+            line-height: 24px;
         }
 
         .form-control{
@@ -72,7 +76,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h2>Add Mail</h2>
+                                <h2 style = "font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080";>New MailBox</h2>
                                 <div class="d-flex">
                                     <div>
                                         <img src="{% static 'asset/img/bg.png' %}" alt="Step 1">
@@ -86,26 +90,40 @@
                     </div>
                     <div class="row">
                         <div class="col-10" style="height: 80vh; background-color: rgb(215,229,229); padding-left: 200px; padding-right: 200px">
-                            <form action="" method="post">
+                            <form action="{% url 'add_new_mailbox' %}" method="post">
                                 {% csrf_token %}
+                                {% if form.errors %}
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        {% for field in form %}
+                                            {% for error in field.errors %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        {% for error in form.non_field_errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
                                 <div class="form-container">
                                     <div class="row mb-3">
                                         <div class="col-12 col-lg-6">
-                                            <label for="mail_id" class="form-label">Mail Bag Id</label>
+                                            <label for="mail_id" class="custom-label">Mail Bag Id</label>
                                             <input type="text" class="form-control" id="mail_id" name="mail_id" value="{{ form.mail_id.value|default_if_none:'' }}" style="height: 50px; border-radius: 14px;" readonly>
                                         </div>
                                         <div class="col-12 col-lg-6">
-                                            <label for="handling_officer" class="form-label">Handling Officer's Name</label>
+                                            <label for="handling_officer" class="custom-label">Handling Officer's Name</label>
                                             <input type="text" class="form-control" id="handling_officer" name="handling_officer" value="{{ form.handling_officer.value|default_if_none:'' }}" placeholder="David Annan" style="height: 50px; border-radius: 14px;" required>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-12 col-lg-6">
-                                            <label for="dispatch_date" class="form-label">Dispatch Date</label>
-                                            <input type="date" class="form-control" id="dispatch_date" name="dispatch_date" value="{{ form.dispatch_date.value|default_if_none:'' }}" style="height: 50px; border-radius: 14px;" required>
+                                            <label for="dispatch_date" class="custom-label">Dispatch Date</label>
+                                            <input type="date" class="form-control" id="dispatch_date" name="dispatch_date" value="{{ form.dispatch_date.value|default_if_none:'' }}"  style="height: 50px; border-radius: 14px;" required>
                                         </div>
                                         <div class="col-12 col-lg-6">
-                                            <label for="to_location" class="form-label">To Location</label>
+                                            <label for="to_location" class="custom-label">To Location</label>
                                             <select class="form-select" id="to_location" name="to_location" style="height: 50px; border-radius: 14px;">
                                                 {% for location in form.to_location.field.queryset%}
                                                 <option value="{{ location.id }}">{{ location.name }}</option>
@@ -115,7 +133,7 @@
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-12">
-                                            <label for="remarks" class="form-label">Remarks (Recall)</label>
+                                            <label for="remarks" class="custom-label">Remarks (Recall)</label>
                                             <textarea class="form-control" id="remarks" name="remarks" rows="8" placeholder="Enter a description..." style="border-radius: 14px;">{{ form.remarks.value|default_if_none:'' }}</textarea>
                                         </div>
                                     </div>

@@ -15,8 +15,8 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from collections import defaultdict
+from django.core.paginator import Paginator
 # User CRUD
-
 @method_decorator([login_required,admin_required], name='dispatch')
 class CreateUser(CreateView):
     model = User
@@ -89,7 +89,7 @@ class LocationUpdateView(UpdateView):
 class DriverCreateView(CreateView):
     model = AssignedTo
     template_name = 'driver/create_driver.html'
-    fields = ['name', 'phone_number']
+    form_class = DriverForm
     success_url = reverse_lazy('drivers')
     
 @method_decorator([login_required, registry_required], name='dispatch')
@@ -168,7 +168,7 @@ class MailBoxUpdateView(UpdateView):
 @method_decorator([login_required, registry_required], name='dispatch')
 class AddIndividualMailView(LoginRequiredMixin, CreateView):
     model = Mail
-    fields = ['individual_mail_id', 'mail_description', 'priority_level']
+    form_class = MailsForm
     template_name = 'mail/add_individual_mail.html'
     
 
@@ -199,7 +199,14 @@ class AddIndividualMailView(LoginRequiredMixin, CreateView):
         mailbox = self.get_mailbox()
         context['mailbox'] = mailbox
         # Add the list of individual mails for this mailbox to the context
-        context['individual_mails'] = mailbox.individual_mails.all()
+        individual_mails = mailbox.individual_mails.all().order_by('-created_at')
+        # Paginate the mails
+        paginator = Paginator(individual_mails, 6)  # Show 10 mails per page
+        page_number = self.request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        
+        # Add the paginated mails to the context
+        context['page_obj'] = page_obj
         return context
 
 @method_decorator([login_required, registry_required], name='dispatch')

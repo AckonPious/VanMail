@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,78 +13,208 @@
 
     {% include 'components/css.html' %}
 
+    <style>
+        .custom-shadow {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
+          }
+        .btn{
+            background-color: #008080;
+            padding: 10px 18px;
+            justify-content: center; 
+            align-items: center; 
+            border-radius: 12px; 
+            color: white; 
+            font-family: 'Nunito Sans'; 
+            font-weight: 600;
+        }
+
+        .noofmsils{
+            font-family: 'Nunito Sans'; 
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .btn:hover {
+            background-color: #007070;
+            color: white; 
+            text-decoration: none; 
+        }
+        .custom-label{
+            color: #3F4753;
+            font-family: "Nunito Sans";
+            font-size: 17px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px;
+        }
+
+        table {
+            border-collapse: collapse;
+            font-family: "Nunito Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 24px;
+        }
+
+        thead th {
+            padding: 14px;
+            font-size: 18px;
+            background-color: whitesmoke;
+            text-transform: uppercase;
+            letter-spacing: 0.05em; 
+        }
+
+        td a img {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        td a img:hover {
+            transform: scale(1.1); 
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar1 -->
-            {% include 'components/sidebar.html' %}
-           
-
-        <!-- End of Sidebar1 -->
-
+        {% include 'components/sidebar.html' %} 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
             <div id="content">
                 <!-- Topbar -->
                 {% include 'components/navbar.html' %}
-                <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div>
-                    <a href="{% url 'mail_boxes'  %}">Back</a>
-                 </div>
                 <div class="container-fluid">
-                    <!-- Page Heading -->
-
                     <div class="row">
                         <div class="col-12">
-                            <div>
-                                <div class="mb-4" > 
-                                    <form action="" method="post">
-                                        {% csrf_token %}
-                                        {{form.as_p}}
-                                        <input type="submit" value="save to Draft" class="btn btn-primary mt-2">
-                                    </form>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 style = "font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080";>Add New Mail</h2>
+                                <div class="d-flex">
+                                    <div>
+                                        <img src="{% static 'asset/img/bg.png' %}" alt="Step 1">
+                                    </div>
+                                    <div>
+                                        <img src="{% static 'asset/img/bg(1).png' %}" alt="Step 2">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Mail_ID</th>
-                                        <th>Priority Level</th>
-                                        <th>Status</th>
-                                        <th>Created_at</th>
-                                        <th>Updated_at</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for mail in individual_mails %}
-                                    <tr>
-                                        <td>{{mail.individual_mail_id}}</td>
-                                        <td>{{mail.priority_level}}</td>
-                                        <td>
-                                            {% if mail.is_received %}
-                                            Recieve
-                                            {% else %}
-                                            Drafted
-                                            {% endif %}
-                                        </td>
-                                        <td>{{mail.created_at}}</td>
-                                        <td>{{mail.updated_at}}</td>
-                                        <td><a href="">Update</a></td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+
+                    <div class="row">
+                        <div class= "col-12" style="height: 80vh; background-color: rgb(215,229,229); padding: 60px;">
+                            <div>
+                                <a href="{% url 'mail_boxes'  %}" style="text-decoration: none; font-size: 40px;">&#8249;</a>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="card p-5 rounded-4 custom-shadow" style="height: 600px;">
+                                        <form action="{% url 'add_individual_mail' mailbox.id %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="mb-4">
+                                                <label for="individual_mail_id" class="form-label custom-label">Mail ID</label>
+                                                <input type="text" class="form-control" id="individual_mail_id" value="{{ form.individual_mail_id.value|default_if_none:'' }}" name="individual_mail_id" style="width: 50%;" readonly>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label for="mailDescription" class="form-label custom-label">Mail Description</label>
+                                                <textarea class="form-control" id="remarks" name="mail_description" rows="6"  style="border-radius: 14px; width: 80%">{{ form.mail_description.value|default_if_none:'' }}</textarea>
+                                            </div>
+                                            <h4 class="mb-4 custom-label">Priority Level</h4>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="priority_level" id="priority_standard" value="Standard" {% if form.priority_level.value == "Standard" %}checked{% endif %}>
+                                                <label class="form-check-label custom-label" for="priority_standard">Standard</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="priority_level" id="priority_high" value="High" {% if form.priority_level.value == "High" %}checked{% endif %}>
+                                                <label class="form-check-label custom-label" for="priority_high">High Priority</label>
+                                            </div>
+                                            <div class="position-absolute" style="bottom: 15px; right: 20px;">
+                                                <input type="submit" value="Save as Draft" class="btn">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="card p-5 rounded-4 custom-shadow" style="height: 600px;">
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless table-striped" id="dataTable" width="100%" cellspacing="0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Mail_ID</th>
+                                                        <th>Description</th>                     
+                                                        <th>Priority Level</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for mail in page_obj %}
+                                                    <tr>
+                                                        <td>{{ mail.individual_mail_id }}</td>
+                                                        <td>{{ mail.mail_description}}</td>
+                                                        <td>{{ mail.priority_level}}</td>
+                                                        <td style="text-align: center;">
+                                                            <a href="">
+                                                                <img src="{% static 'asset/img/pen.png' %}" alt="" style="margin-right: 4px;">
+                                                            </a>
+                                                            <a href="">
+                                                                <img src="{% static 'asset/img/delete.png' %}" alt="" style="margin-left: 4px;">
+                                                            </a>
+                                                        </td>
+
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>                                                
+                                            </table>
+                                            <div class="position-absolute noofmsils" style="bottom: 70px; left: 20px;">
+                                                <label for="totalMails" class="form-label">No of Mails</label>
+                                                <input type="text" class="form-control" id="totalMails" value="" style="width: 40%;">           
+                                            </div>
+                                            <nav aria-label="Page navigation example" style="position: absolute; bottom: 10px; left: 0; right: 0;">
+                                                <ul class="pagination justify-content-center">
+                                                    {% if page_obj.has_previous %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page=1" aria-label="First">
+                                                            <span aria-hidden="true">&laquo;&laquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                                                            <span aria-hidden="true">&laquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    {% endif %}
+                            
+                                                    {% for num in page_obj.paginator.page_range %}
+                                                    <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                                    </li>
+                                                    {% endfor %}
+                            
+                                                    {% if page_obj.has_next %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                                                            <span aria-hidden="true">&raquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                                                            <span aria-hidden="true">&raquo;&raquo;</span>
+                                                        </a>
+                                                    </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </nav>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
