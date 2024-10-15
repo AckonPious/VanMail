@@ -59,7 +59,7 @@ class UserUpdateView(UpdateView):
 class LocationCreateView(CreateView):
     model = Location
     template_name = 'location/create_location.html'
-    fields = ['name']
+    form_class = LocationForm
     success_url = reverse_lazy('locations')
     
 
@@ -68,6 +68,7 @@ class locationListView(ListView):
     model = Location
     template_name = 'location/location_list.html'
     context_object_name = 'locations'
+    paginate_by = 3
 
 @method_decorator([login_required, admin_required], name='dispatch')
 class LocationDeleteView(DeleteView):
@@ -97,7 +98,7 @@ class DriverListView(ListView):
     model = AssignedTo
     template_name = 'driver/driver_list.html'
     context_object_name = 'drivers'
-
+    paginate_by = 1
 
 @method_decorator([login_required, registry_required], name='dispatch')
 class DriverDeleteView(DeleteView):
