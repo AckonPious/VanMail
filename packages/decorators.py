@@ -6,7 +6,16 @@ from functools import wraps
 def admin_required(view_func, denied_url="dashboard"):
     @functools.wraps(view_func)
     def wrapper(request, *args, **kwargs):
-        if request.user.is_authenticated and request.user.is_admin:
+        if (request.user.is_authenticated and request.user.is_admin) or (request.user.is_authenticated and request.user.is_superadmin):
+            return view_func(request, *args, **kwargs)
+        messages.warning(request, "Page not found")
+        return redirect(denied_url)  
+    return wrapper
+
+def superadmin_required(view_func, denied_url="dashboard"):
+    @functools.wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.is_superadmin:
             return view_func(request, *args, **kwargs)
         messages.warning(request, "Page not found")
         return redirect(denied_url)  
@@ -15,7 +24,7 @@ def admin_required(view_func, denied_url="dashboard"):
 def registry_required(view_func, denied_url="dashboard"):
     @functools.wraps(view_func)
     def wrapper(request, *args, **kwargs):
-        if (request.user.is_authenticated and request.user.is_registry) or (request.user.is_authenticated and request.user.is_admin):
+        if (request.user.is_authenticated and request.user.is_registry) or (request.user.is_authenticated and request.user.is_admin) or (request.user.is_authenticated and request.user.is_superadmin):
             return view_func(request, *args, **kwargs)
         messages.info(request, "Page not found")
         return redirect(denied_url)  

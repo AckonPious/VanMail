@@ -17,6 +17,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True, null=True, blank=False)
     is_admin = models.BooleanField(default=False)
     is_registry = models.BooleanField(default=False)
+    is_superadmin = models.BooleanField(default=False)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=False)
     
     class Meta:

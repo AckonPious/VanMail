@@ -8,7 +8,7 @@ from mail.models import *
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'is_admin', 'is_registry', 'email', 'full_name', 'location','password1', 'password2']
+        fields = ['username', 'is_admin', 'is_registry', 'is_superadmin','email', 'full_name', 'location','password1', 'password2']
         
 
 class MailBoxForm(forms.ModelForm):
