@@ -25,6 +25,10 @@ class DriverForm(forms.ModelForm):
     class Meta:
         model = AssignedTo
         fields = ['name', 'phone_number']
+class LocationForm(forms.ModelForm):
+    class Meta:
+        model = Location
+        fields = ['name']
         
 
 class FinalSubmissionForm(ModelForm):
