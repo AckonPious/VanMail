@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,51 +14,60 @@
     {% include 'components/css.html' %}
 
     <style>
-        
-        
         /* The Modal (background) */
         .modal {
-          display: none; /* Hidden by default */
-          position: fixed; /* Stay in place */
-          z-index: 1; /* Sit on top */
-          padding-top: 200px; /* Location of the box */
-          left: 0;
-          top: 0;
-          width: 100%; /* Full width */
-          height: 100%; /* Full height */
-          overflow: auto; /* Enable scroll if needed */
-          background-color: rgb(0,0,0); /* Fallback color */
-          background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 200px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
         }
-        
+
         /* Modal Content */
         .modal-content {
-          background-color: #fefefe;
-          margin: auto;
-          padding: 20px;
-          border: 1px solid #888;
-          width: 30%;
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
         }
-        
+
         /* The Close Button */
         .close {
-          color: #aaaaaa;
-          float: right;
-          font-size: 28px;
-          font-weight: bold;
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
         }
-        
+
         .close:hover,
         .close:focus {
-          color: #000;
-          text-decoration: none;
-          cursor: pointer;
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
         }
-        .form-style{
+
+        .form-style {
             padding-left: 80px;
             padding-top: 80px;
         }
-        .custom-label{
+
+        .custom-label {
             color: #3F4753;
             font-family: "Nunito Sans";
             font-size: 17px;
@@ -65,24 +75,25 @@
             font-weight: 600;
             line-height: 24px;
         }
-        .btn{
+
+        .btn {
             background-color: #008080;
             padding: 10px 18px;
-            justify-content: center; 
-            
-            align-items: center; 
-            border-radius: 12px; 
-            color: white; 
-            font-family: 'Nunito Sans'; 
+            justify-content: center;
+
+            align-items: center;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Nunito Sans';
             font-weight: 600;
-             
-            
+
+
         }
-        
+
         .btn:hover {
             background-color: #007070;
-            color: white; 
-            text-decoration: none; 
+            color: white;
+            text-decoration: none;
         }
     </style>
 
@@ -93,8 +104,8 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar1 -->
-            {% include 'components/sidebar.html' %}
-           
+        {% include 'components/sidebar.html' %}
+
 
         <!-- End of Sidebar1 -->
 
@@ -112,7 +123,8 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h2 style = "font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080";>Add New Driver</h2>
+                                <h2 style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080"
+                                    ;>Add New Driver</h2>
                             </div>
                         </div>
                         <div class="col-12" style="height: 80vh; background-color: rgb(215,229,229);">
@@ -120,11 +132,15 @@
                                 {% csrf_token %}
                                 <div class="mb-4">
                                     <label for="name" class="form-label custom-label">name</label>
-                                    <input type="text" class="form-control" id="name" value="{{ form.name.value|default_if_none:'' }}" name="name" style="width: 18%;" placeholder= "David Annan" required>
+                                    <input type="text" class="form-control" id="name"
+                                        value="{{ form.name.value|default_if_none:'' }}" name="name" style="width: 18%;"
+                                        placeholder="David Annan" required>
                                 </div>
                                 <div>
                                     <label for="phone_number" class="form-label custom-label">phone_number</label>
-                                    <input type="text" class="form-control" id="phone_number" value="{{ form.phone_number.value|default_if_none:'' }}" name="phone_number" placeholder="+233 59 429 2572"  style="width: 18%;" required>
+                                    <input type="text" class="form-control" id="phone_number"
+                                        value="{{ form.phone_number.value|default_if_none:'' }}" name="phone_number"
+                                        placeholder="+233 59 429 2572" style="width: 18%;" required>
                                 </div>
                                 <div id="myModal" class="modal">
 
@@ -133,11 +149,11 @@
                                         <span class="close">&times;</span>
                                         <p>Cancel
                                         </p>
-                                        
+
                                         <input type="reset" value="Cancel" class="btn  mt-2 close">
                                     </div>
-                                    </div>
-                                <div style= "right: 20px; bottom: 20px; position: absolute;">
+                                </div>
+                                <div style="right: 20px; bottom: 20px; position: absolute;">
                                     <button class="btn" type="button" id="myBtn">Cancel</button>
                                     <input type="submit" value="Create Driver" class="btn">
                                 </div>
@@ -147,8 +163,8 @@
                 </div>
                 <!-- /.container-fluid -->
             </div>
-            </div>
         </div>
+    </div>
     </div>
     <!-- End of Page Wrapper -->
 
@@ -160,30 +176,30 @@
     <script>
         // Get the modal
         var modal = document.getElementById("myModal");
-        
+
         // Get the button that opens the modal
         var btn = document.getElementById("myBtn");
-        
+
         // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0,1];
-        
+        var span = document.getElementsByClassName("close")[0, 1];
+
         // When the user clicks the button, open the modal 
-        btn.onclick = function() {
-          modal.style.display = "block";
+        btn.onclick = function () {
+            modal.style.display = "block";
         }
-        
+
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
-          modal.style.display = "none";
-        }
-        
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
-          if (event.target == modal) {
+        span.onclick = function () {
             modal.style.display = "none";
-          }
         }
-        </script>
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 </body>
 
 </html>

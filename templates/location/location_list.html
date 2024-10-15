@@ -11,7 +11,61 @@
     <title>Dashboard</title>
 
     {% include 'components/css.html' %}
+    <style>
+        table {
+            border-collapse: collapse;
+            font-family: "Nunito Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 24px;
+        }
 
+        thead th {
+            padding: 14px;
+            font-size: 18px;
+            background-color: #d7e5e5 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.05em; 
+        }
+
+        td a img {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        td a img:hover {
+            transform: scale(1.1); 
+        }
+
+        
+        .custom-pagination {
+            background-color: #c4c6c8;   /* Background color */
+            color: white;               /* Text color */
+            border-radius: 2px;         /* Rounded corners */
+            padding: 12px;          /* Padding inside the buttons */
+            text-decoration: none;      /* Remove underline from the link */
+        }
+
+        /* Hover effect for the buttons */
+        .custom-pagination:hover {
+            background-color: #d7e5e5;  
+            color: #ffffff;             
+            text-decoration: none;      
+        }
+
+        /* Disabled state for buttons (gray out) */
+        .page-item.disabled .custom-pagination {
+            background-color: #c4c6c8;  
+            color: #dcdcdc;             
+            pointer-events: none;       
+        }
+
+
+
+    </style>
+    
 </head>
 
 <body id="page-top">
@@ -20,44 +74,91 @@
     <div id="wrapper">
         <!-- Sidebar1 -->
             {% include 'components/sidebar.html' %}
-           
-
         <!-- End of Sidebar1 -->
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
+
             <!-- Main Content -->
             <div id="content">
+
                 <!-- Topbar -->
                 {% include 'components/navbar.html' %}
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <!-- Content Row -->
-                    <div class="card-body" style="width: 50%;">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <thead>
-                                    <tr>
-                                        <th>Locations</th>
-                                        <th>Created_at</th>
-                                        <th>Updated_at</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for location in locations %}
-                                    <tr>
-                                        <td>{{location.name}}</td>
-                                        <td>{{location.created_at}}</td>
-                                        <td>{{location.updated_at}}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 style = "font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080";>Drivers</h2>
+                            </div>
+                        </div>
+                        <div class="col-12" style="height: 80vh; background-color: rgb(215,229,229); padding: 50px; ">
+                            <div class="mt-4" style="background-color: white; display: flex; justify-content: center; padding-left: 110px;">
+                                <form class="d-none d-sm-inline-block form-inline navbar-search mt-3 mb-3">
+                                  <div class="input-group">
+                                    <input type="text" class="form-control bg-light border-3" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" style="width: 400px; height: 45px;">
+                                  </div>
+                                </form>
+                              </div>                              
+                            <div class="card" style="height: 540px;">
+                                <div class="table-responsive">
+                                    <table class="table " id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Locations</th>
+                                                <th>Created_at</th>
+                                                <th>Updated_at</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for location in locations %}
+                                            <tr>
+                                                <td>{{location.name}}</td>
+                                                <td>{{location.created_at}}</td>
+                                                <td>{{location.updated_at}}</td>
+                                                <td>
+                                                    <a href="{% url 'location_update' location.pk %}">
+                                                        <img src="{% static 'asset/img/pen.png' %}" alt="" style="margin-right: 4px;">
+                                                    </a>
+                                                    <a href="">
+                                                        <img src="{% static 'asset/img/delete.png' %}" alt="" style="margin-left: 4px;">
+                                                    </a>
+                                                  </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                      <nav aria-label="Page navigation example" style="position: absolute; bottom: 10px; left: 0; right: 0;">
+                                        <ul class="pagination justify-content-center">
+                                            <!-- Previous button -->
+                                            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+                                                <a class="page-link custom-pagination" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% else %}#{% endif %}" aria-label="Previous">
+                                                    <span aria-hidden="true"><i class="fas fa-arrow-left"></i> Previous</span>
+                                                </a>
+                                            </li>
+                                        
+                                            <!-- Page number buttons -->
+                                            {% for num in page_obj.paginator.page_range %}
+                                            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                                                <a class="page-link"  href="?page={{ num }}">{{ num }}</a>
+                                            </li>
+                                            {% endfor %}
+                                        
+                                            <!-- Next button -->
+                                            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+                                                <a class="page-link custom-pagination" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% else %}#{% endif %}" aria-label="Next">
+                                                    <span aria-hidden="true">Next <i class="fas fa-arrow-right"></i></span>
+                                                </a>
+                                            </li>
+                                        </ul>                                                                               
+                                    </nav>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -70,7 +171,6 @@
         <i class="fas fa-angle-up"></i>
     </a>
     {% include 'components/js.html' %}
-    
 </body>
 
 </html>
