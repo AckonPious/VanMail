@@ -13,7 +13,7 @@ urlpatterns = [
     
     # Locations
     path('create-location', LocationCreateView.as_view(), name='create_location'),
-    path('locations', locationListView.as_view(), name='locations'),
+    path('locations', LocationListView.as_view(), name='locations'),
     path('location/update/<str:pk>', LocationUpdateView.as_view(), name='location_update'),
     path('location/delete/<str:pk>', LocationDeleteView.as_view(), name='location_delete'),
 
@@ -34,7 +34,7 @@ urlpatterns = [
     path('mailbox/summary/<str:location_id>', ManageMailSummary.as_view(), name='mail_summary'),
     path('mailbox/submitted/<str:pk>', ReceivedMailboxMails.as_view(), name='view_submitted_mailbox'),
     
-    
     # received mails
     path('receive-mail/', ReceiveMailView.as_view(), name='receive_mail'),
+    path('logs/', LogEntryListView.as_view(), name='log_entries_list'),
 ]
