@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
+from datetime import timezone
 
 
 class Location(models.Model):
@@ -9,7 +9,7 @@ class Location(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.name}" 
 
 
 class User(AbstractUser):
@@ -19,10 +19,12 @@ class User(AbstractUser):
     is_registry = models.BooleanField(default=False)
     is_superadmin = models.BooleanField(default=False)
     location = models.ForeignKey(Location, on_delete=models.SET_NULL, null=True, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
         ordering = ['username']
     
     def __str__(self):
-        return self.username
+        return f"{self.username}" 
 
