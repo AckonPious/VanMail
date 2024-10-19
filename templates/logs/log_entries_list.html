@@ -59,7 +59,7 @@
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h2 style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080"
-                                    ;>Locations</h2>
+                                    ;>{{ page_title }}</h2>
                             </div>
                         </div>
                         <div class="col-12" style="background-color: rgb(215,229,229); padding: 60px;">
@@ -68,31 +68,28 @@
                                     <table table table-condensed table-hover" id="table_id" width="100%"
                                     cellspacing="0">
                                         <thead>
-                                            <tr>
-                                                <th>Locations</th>
-                                                <th>Created_at</th>
-                                                <th>Updated_at</th>
-                                                <th>Actions</th>
-                                            </tr>
+                                          <tr>
+                                            <th>User</th>
+                                            <th>Date</th>
+                                            <th>Action</th>
+                                            <th>Change Message</th>
+                                          </tr>
                                         </thead>
                                         <tbody>
-                                            {% for location in locations %}
+                                          {% for log in log_entries %}
                                             <tr>
-                                                <td>{{location.name}}</td>
-                                                <td>{{location.created_at}}</td>
-                                                <td>{{location.updated_at}}</td>
-                                                <td>
-                                                    <a href="{% url 'location_update' location.pk %}">
-                                                        <img src="{% static 'asset/img/pen.png' %}" alt="" style="margin-right: 4px;">
-                                                    </a>
-                                                    <a href="">
-                                                        <img src="{% static 'asset/img/delete.png' %}" alt="" style="margin-left: 4px;">
-                                                    </a>
-                                                  </td>
+                                              <td>{{ log.user }}</td>
+                                              <td>{{ log.action_time|date:"Y-m-d H:i" }}</td>
+                                              <td>{{ log.get_action_flag_display }}</td>
+                                              <td>{{ log.change_message }}</td>
                                             </tr>
-                                            {% endfor %}
+                                          {% empty %}
+                                            <tr>
+                                              <td colspan="4">No log entries found.</td>
+                                            </tr>
+                                          {% endfor %}
                                         </tbody>
-                                    </table>
+                                      </table>
                                 </div>
                             </div>
                         </div>

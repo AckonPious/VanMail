@@ -1,0 +1,6 @@
+{% for message in messages %}
+<div class="alert {{ message.tags }}" role="alert" style="font-size: 14px !important;font-weight: 500; line-height: 1rem; padding:10px;margin-bottom: 0; width: fit-content;">
+    {{ message }}
+</div>
+<br>
+{% endfor %}

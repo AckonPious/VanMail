@@ -20,8 +20,8 @@
     {% if request.user.is_authenticated and request.user.is_admin %}
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Users"
-            aria-expanded="true" aria-controls="Users">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Users" aria-expanded="true"
+            aria-controls="Users">
             <i class="fas fa-users fa-lg" style="color: #9b9da1;"></i>
             <span class="font-weight-bold" style="color: #9b9da1;">Users</span>
         </a>
@@ -32,12 +32,12 @@
             </div>
         </div>
     </li>
-    
+
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#location"
-            aria-expanded="true" aria-controls="location">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#location" aria-expanded="true"
+            aria-controls="location">
             <i class="fas fa-map-marker-alt fa-lg" style="color: #9b9da1;"></i>
-            <span class="font-weight-bold" style="color: #9b9da1;">location</span>
+            <span class="font-weight-bold" style="color: #9b9da1;">locations</span>
         </a>
         <div id="location" class="collapse" aria-labelledby="location" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
@@ -48,10 +48,10 @@
     </li>
     {% endif %}
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#driver"
-            aria-expanded="true" aria-controls="driver">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#driver" aria-expanded="true"
+            aria-controls="driver">
             <i class="fas fa-car fa-lg" style="color: #9b9da1;"></i>
-            <span class="font-weight-bold" style="color: #9b9da1;">driver</span>
+            <span class="font-weight-bold" style="color: #9b9da1;">drivers</span>
         </a>
         <div id="driver" class="collapse" aria-labelledby="driver" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
@@ -62,8 +62,8 @@
     </li>
 
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-            aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
+            aria-controls="collapseTwo">
             <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
             <span class="font-weight-bold" style="color: #9b9da1;">Add New Mail</span>
         </a>
@@ -81,13 +81,12 @@
             <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
             <span class="font-weight-bold" style="color: #9b9da1;">Manage Mails</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
-            data-parent="#accordionSidebar">
+        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
                 <a class="collapse-item" href="{% url 'mail_summary' request.user.location.pk %}">View Summary</a>
                 {% get_locations as locations %}
                 {% for location in locations %}
-                    <a class="collapse-item" href="{% url 'manage_mails' location.pk %}">{{ location.name }}</a>
+                <a class="collapse-item" href="{% url 'manage_mails' location.pk %}">{{ location.name }}</a>
                 {% endfor %}
             </div>
         </div>
@@ -95,8 +94,8 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-            aria-expanded="true" aria-controls="collapsePages">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+            aria-controls="collapsePages">
             <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
             <span class="font-weight-bold" style="color: #9b9da1;">Recieve Mails</span>
         </a>
@@ -106,14 +105,35 @@
             </div>
         </div>
     </li>
-    
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapselog" aria-expanded="true"
+            aria-controls="collapselog">
+            <i class="fas fa-clipboard fa-lg mr-2" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">Audit Log</span>
+        </a>
+        <div id="collapselog" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
+                <a class="collapse-item" href="{% url 'log_entries_list'  %}">view Audit logs</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRA" aria-expanded="true"
+            aria-controls="collapseRA">
+            <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
+            <span class="font-weight-bold" style="color: #9b9da1;">Report & Analytic</span>
+        </a>
+        <div id="collapseRA" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
+                <a class="collapse-item" href="login.html">Login</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider my-2 custom-hr">
-
-
-    <!-- Nav Item - settings-->
-    
-    
 
     <!-- Nav Item - logout-->
     <li class="nav-item">

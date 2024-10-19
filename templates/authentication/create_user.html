@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +13,85 @@
 
     {% include 'components/css.html' %}
 
+    <style>
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 200px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 30%;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .custom-label {
+            color: #3F4753;
+            font-family: "Nunito Sans";
+            font-size: 17px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px;
+        }
+
+        .form-container {
+            padding: 100px;
+        }
+
+        .btn {
+            background-color: #008080;
+            padding: 10px 18px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 14px;
+            color: white;
+            font-family: 'Nunito Sans';
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background-color: #007070;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -19,9 +99,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar1 -->
-            {% include 'components/sidebar.html' %}
-           
-
+        {% include 'components/sidebar.html' %}
         <!-- End of Sidebar1 -->
 
         <!-- Content Wrapper -->
@@ -34,17 +112,122 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <!-- Content Row -->
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        {{form.as_p}}
-                        <input type="submit" value="Create User">
-                    </form>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080"
+                                    ;>Add System User</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-11" style="height: 80vh; background-color: rgb(215,229,229);">
+                            <form action="{% url 'create_user' %}" method="post">
+                                {% csrf_token %}
+                                {% if form.errors %}
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        {% for field in form %}
+                                        {% for error in field.errors %}
+                                        <li>{{ error }}</li>
+                                        {% endfor %}
+                                        {% endfor %}
+                                        {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                                <div class="form-container">
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-mb-6 col-lg-6">
+                                            <label for="username" class="custom-label">Username</label>
+                                            <input type="text" class="form-control" id="id_username" name="username"
+                                                value="{{ form.username.value|default_if_none:'' }}"
+                                                style="height: 50px; border-radius: 14px;" placeholder="Ackon" required>
+                                        </div>
+                                        <div class="col-12 col-mb-6  col-lg-6">
+                                            <label for="email" class="custom-label">Email</label>
+                                            <input type="email" class="form-control" id="id_email" name="email"
+                                                value="{{ form.email.value|default_if_none:'' }}"
+                                                placeholder="admin@gmail.com" style="height: 50px; border-radius: 14px;"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-mb-6  col-lg-6">
+                                            <label for="fullname" class="custom-label">Full-Name</label>
+                                            <input type="text" class="form-control" id="id_full_name" name="full_name"
+                                                value="{{ form.fullname.value|default_if_none:'' }}"
+                                                style="height: 50px; border-radius: 14px;" required>
+                                        </div>
+                                        <div class="col-12 col-mb-6  col-lg-6">
+                                            <label for="location" class="custom-label">Location</label>
+                                            <select class="form-select " id="location" name="location"
+                                                style="height: 50px; border-radius: 14px;">
+                                                {{{% for location in locations %}
+                                                <option value="{{ location.id }}">{{ location.name }}</option>
+                                                {% endfor %}}}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-mb-6 col-lg-6">
+                                            <label for="password" class="custom-label">Password</label>
+                                            <input type="password" class="form-control" id="id_password1" name="password1"
+                                                value="{{ form.password1.value|default_if_none:'' }}"
+                                                style="height: 50px; border-radius: 14px;" required>
+                                        </div>
+                                        <div class="col-12 col-mb-6  col-lg-6 d-flex justify-content-center align-items-center gap-4">
+                                            <div class="form-check me-3">
+                                                <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin"
+                                                    {% if form.is_admin.value %}checked{% endif %}>
+                                                <label for="is_admin" class="custom-label">Is Admin</label>
+                                            </div>
+                                            <div class="form-check me-3">
+                                                <input type="checkbox" class="form-check-input" id="is_registry" name="is_registry"
+                                                    {% if form.is_registry.value %}checked{% endif %}>
+                                                <label for="is_registry" class="custom-label">Is Registry</label>
+                                            </div>
+                                            <div class="form-check me-3">
+                                                <input type="checkbox" class="form-check-input" id="is_superadmin" name="is_superadmin"
+                                                    {% if form.is_superadmin.value %}checked{% endif %}>
+                                                <label for="is_superadmin" class="custom-label">Is Superadmin</label>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-mb-6 col-lg-6">
+                                            <label for="password" class="custom-label">Confirm
+                                                Password</label>
+                                            <input type="password" class="form-control" id="id_password2" name="password2"
+                                                value="{{ form.password2.value|default_if_none:'' }}"
+                                                style="height: 50px; border-radius: 14px;" required>
+                                        </div>
+                                    </div>
+                                    <div id="myModal" class="modal">
 
+                                        <!-- Modal content -->
+                                        <div class="modal-content">
+                                            <span class="close">&times;</span>
+                                            <p>Cancel
+                                            </p>
+                                            <input type="reset" value="Cancel" class="btn  mt-2 close">
+                                        </div>
+                                    </div>
+                                    <div style="right: 20px; bottom: 20px; position: absolute;">
+                                        <button class="btn" type="button" id="myBtn">Cancel</button>
+                                        <input type="submit" value="Create User" class="btn">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <!-- End of Sidebar2 -->
+    </div>
+    </div>
     </div>
     <!-- End of Page Wrapper -->
 
@@ -53,7 +236,35 @@
         <i class="fas fa-angle-up"></i>
     </a>
     {% include 'components/js.html' %}
-    
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0, 1];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
 </body>
 
 </html>

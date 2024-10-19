@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +12,8 @@
     <title>Dashboard</title>
 
     {% include 'components/css.html' %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+
     <style>
         table {
             border-collapse: collapse;
@@ -26,46 +29,11 @@
             font-size: 18px;
             background-color: #d7e5e5 !important;
             text-transform: uppercase;
-            letter-spacing: 0.05em; 
+            letter-spacing: 0.05em;
         }
-
-        td a img {
-            width: 20px;
-            height: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        td a img:hover {
-            transform: scale(1.1); 
-        }
-
-        
-        .custom-pagination {
-            background-color: #c4c6c8;   /* Background color */
-            color: white;               /* Text color */
-            border-radius: 2px;         /* Rounded corners */
-            padding: 12px;          /* Padding inside the buttons */
-            text-decoration: none;      /* Remove underline from the link */
-        }
-
-        /* Hover effect for the buttons */
-        .custom-pagination:hover {
-            background-color: #d7e5e5;  
-            color: #ffffff;             
-            text-decoration: none;      
-        }
-
-        /* Disabled state for buttons (gray out) */
-        .page-item.disabled .custom-pagination {
-            background-color: #c4c6c8;  
-            color: #dcdcdc;             
-            pointer-events: none;       
-        }
-
-
 
     </style>
-    
+
 </head>
 
 <body id="page-top">
@@ -73,7 +41,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar1 -->
-            {% include 'components/sidebar.html' %}
+        {% include 'components/sidebar.html' %}
         <!-- End of Sidebar1 -->
 
         <!-- Content Wrapper -->
@@ -91,20 +59,15 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h2 style = "font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080";>Drivers</h2>
+                                <h2 style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080"
+                                    ;>Drivers</h2>
                             </div>
                         </div>
-                        <div class="col-12" style="height: 80vh; background-color: rgb(215,229,229); padding: 50px; ">
-                            <div class="mt-4" style="background-color: white; display: flex; justify-content: center; padding-left: 110px;">
-                                <form class="d-none d-sm-inline-block form-inline navbar-search mt-3 mb-3">
-                                  <div class="input-group">
-                                    <input type="text" class="form-control bg-light border-3" placeholder="Search" aria-label="Search" aria-describedby="basic-addon2" style="width: 400px; height: 45px;">
-                                  </div>
-                                </form>
-                              </div>                              
-                            <div class="card" style="height: 540px;">
+                        <div class="col-12" style="background-color: rgb(215,229,229); padding: 60px;">
+                            <div class="card">
                                 <div class="table-responsive">
-                                    <table  class="table  id="dataTable" width="100%" cellspacing="0"">
+                                    <table class="table table-condensed table-hover" id="table_id" width="100%"
+                                    cellspacing="0">
                                         <thead>
                                           <tr>
                                               <th>Drivers</th>
@@ -133,30 +96,6 @@
                                           {% endfor %}
                                       </tbody>
                                       </table>
-                                      <nav aria-label="Page navigation example" style="position: absolute; bottom: 10px; left: 0; right: 0;">
-                                        <ul class="pagination justify-content-center">
-                                            <!-- Previous button -->
-                                            <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-                                                <a class="page-link custom-pagination" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% else %}#{% endif %}" aria-label="Previous">
-                                                    <span aria-hidden="true"><i class="fas fa-arrow-left"></i> Previous</span>
-                                                </a>
-                                            </li>
-                                        
-                                            <!-- Page number buttons -->
-                                            {% for num in page_obj.paginator.page_range %}
-                                            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                                                <a class="page-link"  href="?page={{ num }}">{{ num }}</a>
-                                            </li>
-                                            {% endfor %}
-                                        
-                                            <!-- Next button -->
-                                            <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-                                                <a class="page-link custom-pagination" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% else %}#{% endif %}" aria-label="Next">
-                                                    <span aria-hidden="true">Next <i class="fas fa-arrow-right"></i></span>
-                                                </a>
-                                            </li>
-                                        </ul>                                                                               
-                                    </nav>
                                 </div>
                             </div>
                         </div>
@@ -173,6 +112,191 @@
         <i class="fas fa-angle-up"></i>
     </a>
     {% include 'components/js.html' %}
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
+    <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#table_id').DataTable({
+                // Initialize DataTables
+                "pagingType": "simple_numbers", // Type of pagination (simple with previous and next buttons)
+
+                "language": {
+                    "paginate": {
+                        "previous": "<span class='c-paginate'><i class='fas fa-chevron-left'></i> Previous</span>",
+                        "next": "<span class='c-paginate d-flex gap-2' > <span>Next</span> <i class='fas fa-chevron-right'></i></span>"
+                    }
+                }
+            });
+        });
+
+    </script>
+    <style>
+        .c-paginate {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: #007bff;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+            cursor: pointer;
+        }
+
+        .c-paginate i {
+            font-size: 12px;
+            margin-right: 4px;
+            transition: transform 0.3s;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            color: rgb(0, 0, 0) !important;
+            border: 1px solid #ffffff !important;
+            background-color: #ffffff;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111)) !important;
+            background: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -moz-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -ms-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -o-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:active {
+            outline: none;
+            background-color: #ffffff !important;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #0c0c0c)) !important;
+            background: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -moz-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -ms-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -o-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%) !important;
+            box-shadow: inset 0 0 3px #ffffff
+        }
+
+        .paginate_button.current {
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 6px 12px;
+            text-decoration: none;
+        }
+
+        table.dataTable thead th,
+        table.dataTable thead td {
+            border: none !important;
+        }
+
+        table.dataTable.no-footer {
+            border-bottom: 1px solid #ffffff !important;
+        }
+
+        table.dataTable tbody th,
+        table.dataTable tbody td {
+            padding: 15px 10px !important;
+        }
+
+        .dataTables_info {
+            display: none !important;
+        }
+
+        .dataTables_wrapper {
+            padding: 15px 0 !important;
+        }
+
+        .dataTables_length,
+        .dataTables_filter {
+            padding: 10px !important;
+        }
+
+        .dataTables_filter {
+            float: none !important;
+        }
+
+        .dataTables_filter label {
+            float: none !important;
+            display: flex !important;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dataTables_paginate {
+            float: none !important;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0 0 0;
+            margin-top: 10px;
+        }
+
+        /* Styling for input type search */
+        input[type="search"] {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Placeholder text styling */
+        input[type="search"]::placeholder {
+            color: #9E9E9E;
+        }
+
+
+        /* Remove inner search icon on Webkit browsers */
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        /* Styling for the label */
+        label {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Styling for the select dropdown */
+        select {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            background-color: #fff;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        /* Focus and hover effect for the select */
+        select:focus,
+        select:hover {
+            border-color: #4e73df;
+        }
+
+        /* Styling for the option elements */
+        option {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+
 </body>
 
 </html>

@@ -1,6 +1,10 @@
 {% load static %}
+{% load audit_tags %}
+{% load custom_filters %}
+{% load location_tags %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +16,23 @@
 
     {% include 'components/css.html' %}
 
+    <style>
+        .dev-item {
+            overflow-y: auto;
+        }
+
+        .dev-item ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+        }
+
+        .dev-item li {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -19,11 +40,9 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar1 -->
-            {% include 'components/sidebar.html' %}
-           
+        {% include 'components/sidebar.html' %}
 
         <!-- End of Sidebar1 -->
-
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
             <!-- Main Content -->
@@ -37,14 +56,16 @@
                     <!-- Content Row -->
                     <div class="row">
                         <!--  Card  -->
-                        <div  class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card shadow h-100 py-2" style="background-color:#99EDC3; border-radius:10px">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-md font-weight-bold text-uppercase mb-1">
-                                                Total Received MailBoxes</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{mailbox_count}}</div>
+                                            <div class="text-md font-weight-bold text-uppercase mb-1"
+                                                style="font-family: Nunito Sans; color: #3F4753; font-weight: 500;">
+                                                Total Received MailBags</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                                style="font-family: Inter;">{{mailbox_count}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -56,10 +77,12 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-md font-weight-bold text-uppercase mb-1">
-                                               Total Mails Received 
+                                            <div class="text-md font-weight-bold text-uppercase mb-1"
+                                                style="font-family: Nunito Sans; color: #3F4753; font-weight: 500;">
+                                                Total Mails Received
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{mails_count}}</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                                style="font-family: Inter;">{{mails_count}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -71,9 +94,11 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-md font-weight-bold text-uppercase mb-1">
-                                                Mails Delivered</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">7,269</div>
+                                            <div class="text-md font-weight-bold text-uppercase mb-1"
+                                                style="font-family: Nunito Sans; color: #3F4753; font-weight: 500;">
+                                                Mails In Transit</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                                style="font-family: Inter;">{{in_transit_count}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -81,13 +106,15 @@
                         </div>
                         <!--  Card  -->
                         <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card shadow h-100 py-2" style="background-color:#E5ECF6; border-radius:10px;">
+                            <div class="card shadow h-100 py-2" style="background-color:#E5ECF6; border-radius:10px; ">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-md font-weight-bold text-uppercase mb-1">
-                                               Pending Mails/Packages</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">7,269</div>
+                                            <div class="text-md font-weight-bold text-uppercase mb-1"
+                                                style="font-family: Nunito Sans; color: #3F4753; font-weight: 500;">
+                                                Drafted Mailbags</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"
+                                                style="font-family: Inter;">{{ drafted_count }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -99,9 +126,8 @@
                         <!-- Pie Chart -->
                         <div class="col-xl-6 col-lg-5">
                             <div class="card shadow mb-4">
-                                <div
-                                    class="py-3 d-flex flex-row align-items-center justify-content-between px-3">
-                                    <h6 class="m-0 font-weight-bold">Audit Logs</h6>
+                                <div class="py-3 d-flex flex-row align-items-center justify-content-between px-3">
+                                    <h6 class="m-0" style="font-size: large; font-weight: bold;">Audit Logs</h6>
                                     <a href="" class="font-weight-bold">View all</a>
                                 </div>
                                 <!-- Card Body -->
@@ -110,27 +136,42 @@
                                         <div class="chart-pie pt-2 pb-2"> <!-- Pie chart takes available space -->
                                             <canvas id="myPieChart"></canvas>
                                         </div>
-                                        <div class="d-flex flex-column ml-3"> <!-- Legend area with spacing -->
-                                            <span class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-circle text-primary mr-1"></i> Mails
-                                            </span>
-                                            <span class="mr-2 d-flex align-items-center mb-2">
-                                                <i class="fas fa-circle text-success mr-1"></i> MailBoxes
-                                            </span>
-                                            <span class="mr-2 d-flex align-items-center md-2">
-                                                <i class="fas fa-circle text-info mr-1"></i> Mails
-                                            </span>
+                                        <div class="d-flex ml-3"> <!-- Legend area with spacing -->
+                                            <div class="d-flex flex-column ml-3"
+                                                style="color: var(--black-100, #1C1C1C); font-family: Inter; font-size: 15px; font-style: normal; font-weight: 400; line-height: 18px; font-feature-settings: 'ss01' on, 'cv01' on, 'cv11' on;">
+                                                <span class="d-flex align-items-center mb-2">
+                                                    <i class="fas fa-circle fa-xs text-primary mr-1"></i> Drafted
+                                                </span>
+                                                <span class="mr-2 d-flex align-items-center mb-2">
+                                                    <i class="fas fa-circle fa-xs text-success mr-1"></i> Received
+                                                </span>
+                                                <span class="mr-2 d-flex align-items-center md-2">
+                                                    <i class="fas fa-circle fa-xs text-info mr-1"></i> Transit
+                                                </span>
+                                            </div> <!-- Legend area with spacing -->
+                                            <div class="d-flex flex-column ml-3"
+                                                style="color: var(--black-100, #1C1C1C); font-family: Inter; font-size: 15px; font-style: normal; font-weight: 400; line-height: 18px; font-feature-settings: 'ss01' on, 'cv01' on, 'cv11' on;">
+                                                <span class="d-flex align-items-center mb-2">
+                                                    {{drafted_per}}%
+                                                </span>
+                                                <span class="mr-2 d-flex align-items-center mb-2">
+                                                    {{received_per}}%
+                                                </span>
+                                                <span class="mr-2 d-flex align-items-center mb-2">
+                                                    {{in_transit_per}}%
+                                                </span>
+                                            </div> <!-- Legend area with spacing -->
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-xl-6 col-lg-5">
                             <div class="card shadow mb-4">
-                                <div
-                                    class="py-3 d-flex flex-row align-items-center justify-content-between px-3" >
-                                    <h6 class="m-0 font-weight-bold">Manage Mail Overview</h6>
+                                <div class="py-3 d-flex flex-row align-items-center justify-content-between px-3">
+                                    <h6 class="m-0" style="font-size: large; font-weight: bold;">Manage Mail Overview
+                                    </h6>
                                     <a href="" class="font-weight-bold">View all</a>
                                 </div>
                                 <!-- Card Body -->
@@ -139,22 +180,44 @@
                                         <div class="chart-pie pt-2 pb-2"> <!-- Pie chart takes available space -->
                                             <canvas id="myPieChart1"></canvas>
                                         </div>
-                                        <!-- Add margin-left to this div to create space between the chart and text -->
-                                        <div class="d-flex flex-column ml-3"> <!-- Legend area with spacing -->
-                                            <span class="d-flex align-items-center mb-2">
-                                                <i class="fas fa-circle text-primary mr-1"></i> Mails
-                                            </span>
-                                            <span class="mr-2 d-flex align-items-center mb-2">
-                                                <i class="fas fa-circle text-success mr-1"></i> MailBoxes
-                                            </span>
-                                            <span class="mr-2 d-flex align-items-center md-2">
-                                                <i class="fas fa-circle text-info mr-1"></i> Mails
-                                            </span>
+                                        <div class="d-flex ml-3"> <!-- Legend area with spacing -->
+                                            <div class="d-flex flex-column ml-3"
+                                                style="color: var(--black-100, #1C1C1C); font-family: Inter; font-size: 15px; font-style: normal; font-weight: 400; line-height: 18px; font-feature-settings: 'ss01' on, 'cv01' on, 'cv11' on;">
+                                                <span class="d-flex align-items-center mb-2">
+                                                    <i class="fas fa-circle fa-xs mr-1" style="color: #4e73df;"></i>
+                                                    Akuse
+                                                </span>
+                                                <span class="mr-2 d-flex align-items-center mb-2">
+                                                    <i class="fas fa-circle fa-xs mr-1" style="color: #1cc88a;"></i>
+                                                    Tema
+                                                </span>
+                                                <span class="mr-2 d-flex align-items-center mb-2">
+                                                    <i class="fas fa-circle fa-xs mr-1" style="color: #36b9cc;"></i>
+                                                    Accra
+                                                </span>
+                                                <span class="mr-2 d-flex align-items-center ">
+                                                    <i class="fas fa-circle fa-xs mr-1" style="color: #36454F;"></i>
+                                                    Akosombo
+                                                </span>
+                                            </div>
+                                            <!-- Legend area with spacing -->
+                                            <div class="d-flex flex-column ml-3">
+                                                <span class="d-flex align-items-center mb-2">
+
+                                                </span>
+                                                <span class="mr-2 d-flex align-items-center mb-2">
+
+                                                </span>
+                                                <span class="mr-2 d-flex align-items-center md-2">
+
+                                                </span>
+                                            </div> <!-- Legend area with spacing -->
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                     </div>
 
                     <!-- Content Row -->
@@ -162,9 +225,8 @@
                         <!-- Content Column -->
                         <div class="col-lg-12 mb-4">
                             <div class="card shadow mb-4">
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold">Mail Graph</h6>
+                                <div class="py-3 d-flex flex-row align-items-center justify-content-between px-3">
+                                    <h6 class="m-0" style="font-size: large; font-weight: bold;">Mail Graph</h6>
                                     <a href="" class="font-weight-bold">View all</a>
                                 </div>
                                 <div class="card-body">
@@ -182,12 +244,50 @@
         <!-- Sidebar2-->
         <ul class="navbar-nav bg-light sidebar sidebar-dark accordion" id="accordionSidebarRight"
             style="margin-left: auto; width: 300px !important;">
-            <ul class="navbar-nav bg-light sidebar sidebar-dark accordion" id="accordionSidebarRight" style="margin-left: auto; width: 300px !important;">
+            <ul class="navbar-nav bg-light sidebar sidebar-dark accordion" id="accordionSidebarRight"
+                style="margin-left: auto; width: 300px !important;">
                 <section class="dev">
-                    <div class="dev-item"><h4 class="font-weight-bold">Notifications</h4></div>
-                    <div class="dev-item"><h4 class="font-weight-bold">Audit Log</h4></div>
-                    <div class="dev-item"><h4 class="font-weight-bold">Location</h4></div>
+                    <div class="dev-item">
+                        <h4 class="font-weight-bold">Notifications</h4>
+                        <span>
+                        </span>
+                    </div>
+                    <h4 class="font-weight-bold mb-1">Audit Log</h4>
+                    <div class="dev-item">                      
+                        <!-- Start of Audit Log -->
+                        <ul style="list-style-type: none; padding: 0; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400;">
+                            {% for log in log_entries %}
+                            <li style="padding: 7px; border-bottom: 1px solid #EAEAEA;"">
+                                <i class="fas fa-clipboard fa-lg mr-2"></i>
+                                <span>
+                                    On {{ log.action_time|date:"M d, Y H:i" }},
+                                    {{log.change_message}}
+                                </span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <!-- End of Audit Log -->
+                    </div>
+                    <h4 class="font-weight-bold mt-3 mb-4">Locations</h4>
+                    <div class="dev-item">
+                        <ul style="list-style-type: none; padding: 0; margin: 0; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; color: #1C1C1C;">
+                            {% get_all_locations as locations %}
+                            {% for location in locations %}
+                            <li style="padding: 10px; border-bottom: 1px solid #EAEAEA;">
+                                <i class="fas fa-map-marker-alt mr-2" style="color: #36b9cc;"></i>
+                                {{ location.name }}
+                            </li>
+                            {% empty %}
+                            <li style="padding: 10px; border-bottom: 1px solid #EAEAEA; color: #6c0707;">
+                                <i class="fas fa-exclamation-circle mr-2" style="color: #6c0707;"></i> 
+                                No locations available.
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        
+                    </div>
                 </section>
+
             </ul>
         </ul>
         <!-- End of Sidebar2 -->
@@ -200,73 +300,77 @@
     </a>
     {% include 'components/js.html' %}
     <script>
-    // Set new default font family and font color to mimic Bootstrap's default styling
-    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#858796';
+        // Set new default font family and font color to mimic Bootstrap's default styling
+        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#858796';
 
-    // Pie Chart Example
-    var ctx = document.getElementById("myPieChart");
-    var myPieChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ["Mails", "MailBox", "Mails"],
-        datasets: [{
-        data: [{{mails_count}}, {{mailbox_count}}, {{mails_count}}],
-        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-        hoverBorderColor: "rgba(234, 236, 244, 1)",
-        }],
-    },
-    options: {
-        maintainAspectRatio: false,
-        tooltips: {
-        backgroundColor: "rgb(255,255,255)",
-        bodyFontColor: "#858796",
-        borderColor: '#dddfeb',
-        borderWidth: 1,
-        xPadding: 15,
-        yPadding: 15,
-        displayColors: false,
-        caretPadding: 10,
-        },
-        legend: {
-        display: false
-        },
-        cutoutPercentage: 50,
-    },
-    });
-    var ctx = document.getElementById("myPieChart1");
-    var myPieChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-        labels: ["Akuse", "Tema", "Akosombo", "Kpone"],
-        datasets: [{
-        data: [40, 25, 20, 15],
-        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#36454F'],
-        hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-        hoverBorderColor: "rgba(234, 236, 244, 1)",
-        }],
-    },
-    options: {
-        maintainAspectRatio: false,
-        tooltips: {
-        backgroundColor: "rgb(255,255,255)",
-        bodyFontColor: "#858796",
-        borderColor: '#dddfeb',
-        borderWidth: 1,
-        xPadding: 10,
-        yPadding: 10,
-        displayColors: false,
-        caretPadding: 10,
-        },
-        legend: {
-        display: false
-        },
-        cutoutPercentage: 50,
-    },
-    });
-</script>
-    
+        // Pie Chart Example for Mails and MailBox
+        var ctx1 = document.getElementById("myPieChart");
+        var myPieChart1 = new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: ["Drafted", "In Transit", "Received"],
+                datasets: [{
+                    data: [{{ drafted_count|default:0 }}, {{ in_transit_count|default:0 }}, {{ received_count|default:0 }}],
+
+        backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],  // Colors for each status
+            hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                hoverBorderColor: "rgba(234, 236, 244, 1)",
+                                }],
+                        },
+        options: {
+            maintainAspectRatio: false,
+                tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                        borderColor: '#dddfeb',
+                            borderWidth: 1,
+                                xPadding: 15,
+                                    yPadding: 15,
+                                        displayColors: false,
+                                            caretPadding: 10,
+                },
+            legend: {
+                display: false
+            },
+            cutoutPercentage: 50,
+            },
+        });
+
+        // Pie Chart Example for Locations
+        var ctx2 = document.getElementById("myPieChart1");
+        var myPieChart2 = new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ["Akuse", "Tema", "Accra", "Akosombo"],
+                datasets: [{
+                    data: [40, 25, 20, 15],  // Adjust this data as necessary
+                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#36454F'],
+                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 10,
+                    yPadding: 10,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 50,
+            },
+        });
+    </script>
+
+
 </body>
 
 </html>

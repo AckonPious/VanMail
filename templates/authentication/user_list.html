@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +12,27 @@
     <title>Dashboard</title>
 
     {% include 'components/css.html' %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
+
+    <style>
+        table {
+            border-collapse: collapse;
+            font-family: "Nunito Sans", sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 24px;
+        }
+
+        thead th {
+            padding: 14px;
+            font-size: 18px;
+            background-color: #d7e5e5 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+    </style>
 
 </head>
 
@@ -19,57 +41,64 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar1 -->
-            {% include 'components/sidebar.html' %}
-           
-
+        {% include 'components/sidebar.html' %}
         <!-- End of Sidebar1 -->
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
+
             <!-- Main Content -->
             <div id="content">
+
                 <!-- Topbar -->
                 {% include 'components/navbar.html' %}
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>Username</th>
-                                            <th>Full Name</th>
-                                            <th>Email</th>
-                                            <th>Location</th>
-                                            <th>Role</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for user in users %}
-                                        <tr>
-                                            <td><a href="{% url 'user_detail' user.pk %}">{{user.username}}</a></td>
-                                            <td>{{user.full_name}}</td>
-                                            <td>{{user.email}}</td>
-                                            <td>{{user.location}}</td>
-                                            {% if user.is_admin %}
-                                            <td>Admin</td>
-                                            {% elif user.is_registry %}
-                                            <td>Registry</td>
-                                            {% else %}
-                                            <td>None</td>
-                                            {% endif %}
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080"
+                                    ;>System Users</h2>
+                            </div>
+                        </div>
+                        <div class="col-12" style="background-color: rgb(215,229,229); padding: 60px;">
+                            <div class="card">
+                                <div class="table-responsive">
+                                    <table class="table table-condensed table-hover" id="table_id" width="100%"
+                                        cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Username</th>
+                                                <th>Full Name</th>
+                                                <th>Email</th>
+                                                <th>Location</th>
+                                                <th>Role</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for user in users %}
+                                            <tr>
+                                                <td>{{user.username}}</td>
+                                                <td>{{user.full_name}}</td>
+                                                <td>{{user.email}}</td>
+                                                <td>{{user.location.name}}</td>
+                                                {% if user.is_admin %}
+                                                <td>Admin</td>
+                                                {% elif user.is_registry %}
+                                                <td>Registry</td>
+                                                {% else %}
+                                                <td>None</td>
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -82,7 +111,191 @@
         <i class="fas fa-angle-up"></i>
     </a>
     {% include 'components/js.html' %}
-    
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
+
+    <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#table_id').DataTable({
+                // Initialize DataTables
+                "pagingType": "simple_numbers", // Type of pagination (simple with previous and next buttons)
+
+                "language": {
+                    "paginate": {
+                        "previous": "<span class='c-paginate'><i class='fas fa-chevron-left'></i> Previous</span>",
+                        "next": "<span class='c-paginate d-flex gap-2' > <span>Next</span> <i class='fas fa-chevron-right'></i></span>"
+                    }
+                }
+            });
+        });
+
+    </script>
+    <style>
+        .c-paginate {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            color: #007bff;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+            cursor: pointer;
+        }
+
+        .c-paginate i {
+            font-size: 12px;
+            margin-right: 4px;
+            transition: transform 0.3s;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            color: rgb(0, 0, 0) !important;
+            border: 1px solid #ffffff !important;
+            background-color: #ffffff;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111)) !important;
+            background: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -moz-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -ms-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -o-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%) !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:active {
+            outline: none;
+            background-color: #ffffff !important;
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #0c0c0c)) !important;
+            background: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -moz-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -ms-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: -o-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+            background: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%) !important;
+            box-shadow: inset 0 0 3px #ffffff
+        }
+
+        .paginate_button.current {
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            padding: 6px 12px;
+            text-decoration: none;
+        }
+
+        table.dataTable thead th,
+        table.dataTable thead td {
+            border: none !important;
+        }
+
+        table.dataTable.no-footer {
+            border-bottom: 1px solid #ffffff !important;
+        }
+
+        table.dataTable tbody th,
+        table.dataTable tbody td {
+            padding: 15px 10px !important;
+        }
+
+        .dataTables_info {
+            display: none !important;
+        }
+
+        .dataTables_wrapper {
+            padding: 15px 0 !important;
+        }
+
+        .dataTables_length,
+        .dataTables_filter {
+            padding: 10px !important;
+        }
+
+        .dataTables_filter {
+            float: none !important;
+        }
+
+        .dataTables_filter label {
+            float: none !important;
+            display: flex !important;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dataTables_paginate {
+            float: none !important;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0 0 0;
+            margin-top: 10px;
+        }
+
+        /* Styling for input type search */
+        input[type="search"] {
+            width: 100%;
+            max-width: 400px;
+            padding: 8px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Placeholder text styling */
+        input[type="search"]::placeholder {
+            color: #9E9E9E;
+        }
+
+
+        /* Remove inner search icon on Webkit browsers */
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+            display: none;
+        }
+
+        /* Styling for the label */
+        label {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Styling for the select dropdown */
+        select {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            background-color: #fff;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        /* Focus and hover effect for the select */
+        select:focus,
+        select:hover {
+            border-color: #4e73df;
+        }
+
+        /* Styling for the option elements */
+        option {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+
 </body>
 
 </html>
