@@ -42,6 +42,7 @@ class Mail(ModelInherit):
     mail_description = models.TextField(blank=False, null=True)
     priority_level = models.CharField(max_length=15, choices=[('Standard', 'Standard'), ('High Priority', 'High Priority')])
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='created_by', blank=False) 
+    is_package = models.BooleanField(default=False)
     is_received = models.BooleanField(default=False)
 
     def __str__(self):
