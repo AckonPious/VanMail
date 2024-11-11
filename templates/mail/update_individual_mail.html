@@ -1,0 +1,201 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard</title>
+
+    {% include 'components/css.html' %}
+
+    <style>
+        .form-control {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 16px;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    
+    .custom-label {
+        font-size: 16px;
+        font-weight: 600;
+        color: #3F4753;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    
+    .form-check-input {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .form-check-label {
+        font-size: 15px;
+        color: #3F4753;
+        margin-left: 5px;
+    }
+
+    
+    .btn-custom {
+        background-color: #008080;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        border: none;
+    }
+
+    .btn-custom:hover {
+        background-color: #007070;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+
+    .custom-a {
+            font-family: 'Nunito Sans', sans-serif;
+            line-height: 32.4px;
+            font-weight: 600;
+            font-style: normal;
+            font-size: 16px;
+            letter-spacing: 0.06rem;
+            color: #008080;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .custom-a i {
+          margin-right: 8px; 
+        }
+
+        .custom-a:hover {
+          color: #008080;
+          box-shadow: 0px 4px 8px rgba(0, 128, 128, 0.3);
+          transform: translateY(-2px);
+        }
+        
+    </style>
+
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar1 -->
+        {% include 'components/sidebar.html' %}
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                {% include 'components/navbar.html' %}
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080"
+                                    ;>Update Mail</h2>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-9"
+                                style=" background-color: rgb(215,229,229); padding: 60px;">
+                                <div style="padding-bottom: 20px;">
+                                    <a href="" class="custom-a"><i class="fas fa-arrow-left"></i> Back</a>
+                                </div>
+                                <div class="row">
+                                    <div class="col-11">
+                                        <div class="card p-5 rounded-4 custom-shadow" style="height: 600px;">
+                                            <form action="" method="post">
+                                                {% csrf_token %}
+                                                {% if form.errors %}
+                                                <div class="alert alert-danger">
+                                                    <ul>
+                                                        {% for field in form %}
+                                                        {% for error in field.errors %}
+                                                        <li>{{ error }}</li>
+                                                        {% endfor %}
+                                                        {% endfor %}
+                                                        {% for error in form.non_field_errors %}
+                                                        <li>{{ error }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                {% endif %}
+                                                <div class="mb-4">
+                                                    <label for="individual_mail_id" class="form-label custom-label">Mail ID</label>
+                                                    <input type="text" class="form-control" id="individual_mail_id" 
+                                                           value="{{ form.individual_mail_id.value|default_if_none:'' }}" 
+                                                           name="individual_mail_id" readonly>
+                                                </div>
+                                                
+                                                <div class="form-check form-switch mb-4" style="margin-left: 19px;">
+                                                    <input class="form-check-input" type="checkbox" name="is_package" id="id_is_package">
+                                                    <label class="form-check-label" for="id_is_package">Is Package</label>
+                                                </div>
+                                                
+                                                <div class="mb-4">
+                                                    <label for="mailDescription" class="form-label custom-label">Mail Description</label>
+                                                    <textarea class="form-control" id="remarks" name="mail_description" rows="6">{{ form.mail_description.value|default_if_none:'' }}</textarea>
+                                                </div>
+                                                
+                                                <h4 class="mb-3 custom-label">Priority Level</h4>
+                                                <div class="d-flex gap-3 mb-4">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="priority_level" 
+                                                               id="priority_standard" value="Standard" 
+                                                               {% if form.priority_level.value == "Standard" %}checked{% endif %}>
+                                                        <label class="form-check-label custom-label" for="priority_standard">Standard</label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="priority_level" 
+                                                               id="priority_high" value="High Priority" 
+                                                               {% if form.priority_level.value == "High Priority" %}checked{% endif %}>
+                                                        <label class="form-check-label custom-label" for="priority_high">High Priority</label>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="text-end mt-4">
+                                                    <input type="submit" value="Save" class="btn btn-custom">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    {% include 'components/js.html' %}
+
+</body>
+
+</html>

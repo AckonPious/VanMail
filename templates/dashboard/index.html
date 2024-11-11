@@ -17,6 +17,22 @@
     {% include 'components/css.html' %}
 
     <style>
+        .btn {
+            background-color: #008080;
+            padding: 10px 18px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Nunito Sans';
+            font-weight: 600;
+        }
+        .btn:hover {
+            background-color: #007070;
+            color: white;
+            text-decoration: none;
+        }
+
         .dev-item {
             overflow-y: auto;
         }
@@ -31,8 +47,102 @@
             margin-bottom: 5px;
             font-size: 0.9rem;
         }
-    </style>
+        .box-text{
+            color: #1C1C1C; 
+            font-family: Nunito;
+            font-size: 14px;
+            font-style: normal;
+            letter-spacing: 0.06rem;
+            font-weight: 400;
+            line-height: 18px; 
+        }
+        .count{
+            font-family: Nunito;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 36px; 
+            color: #1C1C1C; 
+        }
+        .chart-text{
+            font-family: Nunito;
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 36px;
+            letter-spacing: 0.06rem; 
+            color: #1C1C1C;
+        }
+        .chart-text2{
+            font-family: Nunito;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 36px;
+            letter-spacing: 0.06rem; 
+        }
+        .notification {
+            display: flex;
+            flex-direction: column;
+            background-color: #f8f9fc;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 9px;
+            margin: 5px 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
 
+        .notification.unread {
+            background-color: #f8f9fc;
+            border-left: 4px solid #008080; 
+        }
+
+        .notification-message {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .notification-timestamp {
+            font-size: 12px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+
+        .mark-read-btn {
+            background-color: #008080;
+            color: white;
+            font-size: 12px;
+            padding: 5px 7px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            align-self: flex-start;
+        }
+
+        .mark-read-btn:hover {
+            background-color: #007070;
+        }
+
+        .mark-read-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+        }
+
+        form {
+            margin-top: 5px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .notification.unread:hover {
+            background-color: #f8f9fc; 
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -61,11 +171,9 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-md font-weight-bold text-uppercase mb-1"
-                                                style="font-family: Nunito Sans; color: #3F4753; font-weight: 500;">
-                                                Total Received MailBags</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"
-                                                style="font-family: Inter;">{{mailbox_count}}</div>
+                                            <div class="mb-1 box-text">
+                                                Total Received MailBags {{request.user.is_registry}} - {{request.user.location.name}}</div>
+                                            <div class="count">{{mailbox_count}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -77,12 +185,10 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-md font-weight-bold text-uppercase mb-1"
-                                                style="font-family: Nunito Sans; color: #3F4753; font-weight: 500;">
+                                            <div class=" mb-1 box-text">
                                                 Total Mails Received
                                             </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"
-                                                style="font-family: Inter;">{{mails_count}}</div>
+                                            <div class="count">{{mails_count}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -94,11 +200,9 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-md font-weight-bold text-uppercase mb-1"
-                                                style="font-family: Nunito Sans; color: #3F4753; font-weight: 500;">
+                                            <div class=" mb-1 box-text">
                                                 Mails In Transit</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"
-                                                style="font-family: Inter;">{{in_transit_count}}</div>
+                                            <div class="count">{{in_transit_count}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -110,11 +214,10 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-md font-weight-bold text-uppercase mb-1"
-                                                style="font-family: Nunito Sans; color: #3F4753; font-weight: 500;">
+                                            <div class=" mb-1 box-text">
                                                 Drafted Mailbags</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800"
-                                                style="font-family: Inter;">{{ drafted_count }}</div>
+                                            <div class="count"
+                                                >{{ drafted_count }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -127,8 +230,8 @@
                         <div class="col-xl-6 col-lg-5">
                             <div class="card shadow mb-4">
                                 <div class="py-3 d-flex flex-row align-items-center justify-content-between px-3">
-                                    <h6 class="m-0" style="font-size: large; font-weight: bold;">Audit Logs</h6>
-                                    <a href="" class="font-weight-bold">View all</a>
+                                    <h6 class="m-0 chart-text">Mailbags Overview</h6>
+                                    
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
@@ -137,20 +240,20 @@
                                             <canvas id="myPieChart"></canvas>
                                         </div>
                                         <div class="d-flex ml-3"> <!-- Legend area with spacing -->
-                                            <div class="d-flex flex-column ml-3"
-                                                style="color: var(--black-100, #1C1C1C); font-family: Inter; font-size: 15px; font-style: normal; font-weight: 400; line-height: 18px; font-feature-settings: 'ss01' on, 'cv01' on, 'cv11' on;">
+                                            <div class="d-flex flex-column ml-3 chart-text"
+                                                style=" line-height: 18px; font-size: 14px; font-weight: 500;">
                                                 <span class="d-flex align-items-center mb-2">
-                                                    <i class="fas fa-circle fa-xs text-primary mr-1"></i> Drafted
+                                                    <i class="fas fa-circle fa-xs  mr-1" style="color: #4e73df;"></i> Drafted
                                                 </span>
                                                 <span class="mr-2 d-flex align-items-center mb-2">
-                                                    <i class="fas fa-circle fa-xs text-success mr-1"></i> Received
+                                                    <i class="fas fa-circle fa-xs  mr-1" style="color: #36b9cc;"></i> Received
                                                 </span>
                                                 <span class="mr-2 d-flex align-items-center md-2">
-                                                    <i class="fas fa-circle fa-xs text-info mr-1"></i> Transit
+                                                    <i class="fas fa-circle fa-xs  mr-1" style="color: #1cc88a;"></i> Transit
                                                 </span>
                                             </div> <!-- Legend area with spacing -->
-                                            <div class="d-flex flex-column ml-3"
-                                                style="color: var(--black-100, #1C1C1C); font-family: Inter; font-size: 15px; font-style: normal; font-weight: 400; line-height: 18px; font-feature-settings: 'ss01' on, 'cv01' on, 'cv11' on;">
+                                            <div class="d-flex flex-column ml-3 chart-text"
+                                                style="line-height: 18px; font-size: 14px; font-weight: 500;">
                                                 <span class="d-flex align-items-center mb-2">
                                                     {{drafted_per}}%
                                                 </span>
@@ -170,9 +273,9 @@
                         <div class="col-xl-6 col-lg-5">
                             <div class="card shadow mb-4">
                                 <div class="py-3 d-flex flex-row align-items-center justify-content-between px-3">
-                                    <h6 class="m-0" style="font-size: large; font-weight: bold;">Manage Mail Overview
+                                    <h6 class="m-0 chart-text">Mail Sent Overview
                                     </h6>
-                                    <a href="" class="font-weight-bold">View all</a>
+                                    
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
@@ -180,40 +283,33 @@
                                         <div class="chart-pie pt-2 pb-2"> <!-- Pie chart takes available space -->
                                             <canvas id="myPieChart1"></canvas>
                                         </div>
-                                        <div class="d-flex ml-3"> <!-- Legend area with spacing -->
-                                            <div class="d-flex flex-column ml-3"
-                                                style="color: var(--black-100, #1C1C1C); font-family: Inter; font-size: 15px; font-style: normal; font-weight: 400; line-height: 18px; font-feature-settings: 'ss01' on, 'cv01' on, 'cv11' on;">
+                                        <div class="d-flex ml-3"> 
+                                            <div class="d-flex flex-column ml-3 chart-text" style="line-height: 18px; font-size: 14px; font-weight: 500;">
+                                                {% for labels, mailboxes in mails_per_location.items %}
                                                 <span class="d-flex align-items-center mb-2">
-                                                    <i class="fas fa-circle fa-xs mr-1" style="color: #4e73df;"></i>
-                                                    Akuse
+                                                    <i class="fas fa-circle fa-xs mr-1" 
+                                                    style="color: 
+                                                        {% if labels.name == 'Accra' %} #36b9cc; 
+                                                        {% elif labels.name == 'Akuse' %} #4e73df; 
+                                                        {% elif labels.name == 'Akosombo' %} #36454F; 
+                                                        {% elif labels.name == 'Tema' %} #1cc88a; 
+                                                        {% else %} #36454F; 
+                                                        {% endif %}">
+                                                    </i>
+                                                    {{ labels.name }}
                                                 </span>
-                                                <span class="mr-2 d-flex align-items-center mb-2">
-                                                    <i class="fas fa-circle fa-xs mr-1" style="color: #1cc88a;"></i>
-                                                    Tema
-                                                </span>
-                                                <span class="mr-2 d-flex align-items-center mb-2">
-                                                    <i class="fas fa-circle fa-xs mr-1" style="color: #36b9cc;"></i>
-                                                    Accra
-                                                </span>
-                                                <span class="mr-2 d-flex align-items-center ">
-                                                    <i class="fas fa-circle fa-xs mr-1" style="color: #36454F;"></i>
-                                                    Akosombo
-                                                </span>
+                                                {% endfor %}
                                             </div>
-                                            <!-- Legend area with spacing -->
-                                            <div class="d-flex flex-column ml-3">
-                                                <span class="d-flex align-items-center mb-2">
-
-                                                </span>
-                                                <span class="mr-2 d-flex align-items-center mb-2">
-
-                                                </span>
-                                                <span class="mr-2 d-flex align-items-center md-2">
-
-                                                </span>
-                                            </div> <!-- Legend area with spacing -->
-
+                                            
+                                            <div class="d-flex flex-column ml-3 chart-text" style="line-height: 18px; font-size: 14px; font-weight: 500;">
+                                                {% for labels, count in mails_per_location.items %}
+                                                    <span class="mr-2 d-flex align-items-center mb-2">
+                                                        {{ count }} 
+                                                    </span>
+                                                {% endfor %}
+                                            </div>                                            
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -226,8 +322,8 @@
                         <div class="col-lg-12 mb-4">
                             <div class="card shadow mb-4">
                                 <div class="py-3 d-flex flex-row align-items-center justify-content-between px-3">
-                                    <h6 class="m-0" style="font-size: large; font-weight: bold;">Mail Graph</h6>
-                                    <a href="" class="font-weight-bold">View all</a>
+                                    <h6 class="m-0 chart-text" >Mail Graph</h6>
+                                    
                                 </div>
                                 <div class="card-body">
                                     <div class="chart-bar">
@@ -248,17 +344,34 @@
                 style="margin-left: auto; width: 300px !important;">
                 <section class="dev">
                     <div class="dev-item">
-                        <h4 class="font-weight-bold">Notifications</h4>
+                        <h4 class="chart-text">Notifications</h4>
                         <span>
+                            <ul style="list-style-type: none; padding: 0; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400;">
+                                {% for notification in notifications %}
+                                <div class="notification {% if not notification.read %}unread{% endif %}">
+                                    <p class="notification-message">{{ notification.message }}</p>
+                                    <span class="notification-timestamp">{{ notification.timestamp }}</span>
+                                
+                                    {% if not notification.read %}
+                                        <form action="{% url 'mark_as_read' notification.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <button type="submit" class="mark-read-btn">Mark as Read</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                                {% endfor %}
+                            </ul>
                         </span>
                     </div>
-                    <h4 class="font-weight-bold mb-1">Audit Log</h4>
+
+                    {% if request.user.is_authenticated and request.user.is_admin %}
+                    <h4 class="chart-text mb-1">Audit Log</h4>
                     <div class="dev-item">                      
                         <!-- Start of Audit Log -->
                         <ul style="list-style-type: none; padding: 0; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400;">
                             {% for log in log_entries %}
-                            <li style="padding: 7px; border-bottom: 1px solid #EAEAEA;"">
-                                <i class="fas fa-clipboard fa-lg mr-2"></i>
+                            <li style="padding: 7px; border-bottom: 1px solid #EAEAEA;">
+                                <i class="fas fa-clipboard fa-md mr-2"></i>
                                 <span>
                                     On {{ log.action_time|date:"M d, Y H:i" }},
                                     {{log.change_message}}
@@ -268,7 +381,8 @@
                         </ul>
                         <!-- End of Audit Log -->
                     </div>
-                    <h4 class="font-weight-bold mt-3 mb-4">Locations</h4>
+                    {% endif %}
+                    <h4 class="chart-text mt-3 mb-4">Locations</h4>
                     <div class="dev-item">
                         <ul style="list-style-type: none; padding: 0; margin: 0; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 400; color: #1C1C1C;">
                             {% get_all_locations as locations %}
@@ -300,6 +414,7 @@
     </a>
     {% include 'components/js.html' %}
     <script>
+
         // Set new default font family and font color to mimic Bootstrap's default styling
         Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
         Chart.defaults.global.defaultFontColor = '#858796';
@@ -314,21 +429,21 @@
                     data: [{{ drafted_count|default:0 }}, {{ in_transit_count|default:0 }}, {{ received_count|default:0 }}],
 
         backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],  // Colors for each status
-            hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+            hoverBackgroundColor: ['#3e5cbf', '#17a673', '#2c9faf'],
                 hoverBorderColor: "rgba(234, 236, 244, 1)",
                                 }],
                         },
         options: {
             maintainAspectRatio: false,
                 tooltips: {
-                backgroundColor: "rgb(255,255,255)",
+                    backgroundColor: "rgb(255,255,255)",
                     bodyFontColor: "#858796",
-                        borderColor: '#dddfeb',
-                            borderWidth: 1,
-                                xPadding: 15,
-                                    yPadding: 15,
-                                        displayColors: false,
-                                            caretPadding: 10,
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
                 },
             legend: {
                 display: false
@@ -339,14 +454,39 @@
 
         // Pie Chart Example for Locations
         var ctx2 = document.getElementById("myPieChart1");
+
+// Define color mappings based on the location names
+        const colorMap = {
+            'Accra': '#36b9cc',
+            'Akuse': '#4e73df',
+            'Akosombo': '#36454F',
+            'Tema': '#1cc88a'
+        };
+
+        const hoverColorMap = {
+            'Accra': '#2c9b9e',
+            'Akuse': '#3b5cbf',
+            'Akosombo': '#2c3a43',
+            'Tema': '#17a66a'
+        };
+
+        // Generate labels and data from your template
+        const labels = [{% for label in mails_per_location.keys %} "{{ label.name }}", {% endfor %}];
+        const data = [{% for label, count in mails_per_location.items %} {{ count }}, {% endfor %}];
+
+
+        // Create background and hover colors dynamically based on the label names
+        const backgroundColors = labels.map(label => colorMap[label] || '#36454F');  // Default color if label is missing
+        const hoverBackgroundColors = labels.map(label => hoverColorMap[label] || '#2c3a43');  // Default hover color
+
         var myPieChart2 = new Chart(ctx2, {
             type: 'doughnut',
             data: {
-                labels: ["Akuse", "Tema", "Accra", "Akosombo"],
+                labels: labels,
                 datasets: [{
-                    data: [40, 25, 20, 15],  // Adjust this data as necessary
-                    backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#36454F'],
-                    hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                    data: data,
+                    backgroundColor: backgroundColors,
+                    hoverBackgroundColor: hoverBackgroundColors,
                     hoverBorderColor: "rgba(234, 236, 244, 1)",
                 }],
             },
@@ -368,7 +508,135 @@
                 cutoutPercentage: 50,
             },
         });
-    </script>
+
+
+        // bar chart
+        // Set new default font family and font color to mimic Bootstrap's default styling
+Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#858796';
+
+function number_format(number, decimals, dec_point, thousands_sep) {
+  // *     example: number_format(1234.56, 2, ',', ' ');
+  // *     return: '1 234,56'
+  number = (number + '').replace(',', '').replace(' ', '');
+  var n = !isFinite(+number) ? 0 : +number,
+    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+    s = '',
+    toFixedFix = function(n, prec) {
+      var k = Math.pow(10, prec);
+      return '' + Math.round(n * k) / k;
+    };
+  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+  if (s[0].length > 3) {
+    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+  }
+  if ((s[1] || '').length < prec) {
+    s[1] = s[1] || '';
+    s[1] += new Array(prec - s[1].length + 1).join('0');
+  }
+  return s.join(dec);
+}
+const months = {{ months|safe }};
+const receivedCounts = {{ received_counts|safe }};
+// Bar Chart Example
+var ctx = document.getElementById("myBarChart1");
+
+var myBarChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: [months],
+    datasets: [{
+      label: "Mails",
+      backgroundColor:[
+        "#008080", // Jan
+        "#BAEDBD", // Feb
+        "#1C1C1C", // Mar
+        "#B1E3FF", // Apr
+        "#A8C5DA", // May
+        "#A1E3CB", // Jun
+        "#95A4FC", // Jul
+        "#A1E3CB", // Aug
+        "#1C1C1C", // Sep
+        "#B1E3FF", // Oct
+        "#A8C5DA", // Nov
+        "#A1E3CB"  // Dec
+      ],
+      borderColor: "#4e73df",
+      data: receivedCounts,
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 10,
+        right: 25,
+        top: 25,
+        bottom: 0
+      }
+    },
+    scales: {
+      xAxes: [{
+        time: {
+          unit: 'month'
+        },
+        gridLines: {
+          display: false,
+          drawBorder: false
+        },
+        ticks: {
+          maxTicksLimit: 12
+        },
+        maxBarThickness: 50,
+      }],
+      yAxes: [{
+        ticks: {
+          min: 0,
+          max: 1500,
+          maxTicksLimit: 5,
+          padding: 10,
+          
+         
+        },
+        gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+        }
+      }],
+    },
+    legend: {
+      display: false
+    },
+    tooltips: {
+      titleMarginBottom: 10,
+      titleFontColor: '#6e707e',
+      titleFontSize: 14,
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      caretPadding: 10,
+      callbacks: {
+        label: function(tooltipItem, chart) {
+          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+          return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+        }
+      }
+    },
+  }
+});
+
+</script>
+
 
 
 </body>

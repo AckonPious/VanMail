@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from authentication.models import User
 from mail.models import *
 
+ 
 class UserCreateForm(UserCreationForm):
     class Meta:
         model = User
@@ -19,7 +20,7 @@ class MailsForm(forms.ModelForm):
                    widget=forms.Textarea(attrs={'required':True}))
     class Meta:
         model = Mail
-        fields = ['individual_mail_id', 'mail_description', 'priority_level']
+        fields = ['individual_mail_id', 'mail_description', 'priority_level', 'is_package', 'recalled']
               
 class DriverForm(forms.ModelForm):
     class Meta:

@@ -105,7 +105,7 @@
             </div>
         </div>
     </li>
-
+    {% if request.user.is_authenticated and request.user.is_admin %}
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapselog" aria-expanded="true"
             aria-controls="collapselog">
@@ -118,19 +118,10 @@
             </div>
         </div>
     </li>
+    {% endif %}
 
-    <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRA" aria-expanded="true"
-            aria-controls="collapseRA">
-            <i class="fas fa-chart-bar fa-lg" style="color: #9b9da1;"></i>
-            <span class="font-weight-bold" style="color: #9b9da1;">Report & Analytic</span>
-        </a>
-        <div id="collapseRA" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-            <div class="py-2 collapse-inner rounded" style="color: #9b9da1;">
-                <a class="collapse-item" href="login.html">Login</a>
-            </div>
-        </div>
-    </li>
+    
+
 
     <!-- Divider -->
     <hr class="sidebar-divider my-2 custom-hr">
@@ -139,6 +130,6 @@
     <li class="nav-item">
         <a class="nav-link" href="{% url 'logout' %}">
             <i class="fas fa-sign-out-alt fa-lg" style="color: rgba(119, 6, 6, 0.99);"></i>
-            <span style="color: rgba(119, 6, 6, 0.99);">Logout Account</span></a>
+            <span style="color: rgba(119, 6, 6, 0.99);">Logout</span></a>
     </li>
 </ul>

@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dashboard</title>
+
+    {% include 'components/css.html' %}
+
+    <style>
+        h2{
+            font-family: 'Nunito Sans';
+            line-height: 32.4px; 
+            font-weight: 600; 
+            font-style: normal;
+            font-size: 24px; 
+            color: #008080 !important;
+        }
+        
+
+
+        .custom-label {
+            color: #3F4753;
+            font-family: "Nunito Sans";
+            font-size: 17px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 24px;
+        }
+
+        .form-container {
+            padding: 100px;
+        }
+
+        .btn {
+            background-color: #008080;
+            padding: 10px 18px;
+            justify-content: center;
+            align-items: center;
+            border-radius: 14px;
+            color: white;
+            font-family: 'Nunito Sans';
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            background-color: #007070;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        <!-- Sidebar1 -->
+        {% include 'components/sidebar.html' %}
+        <!-- End of Sidebar1 -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Topbar -->
+                {% include 'components/navbar.html' %}
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2>update System User</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-11" style="height: 80vh; background-color: rgb(215,229,229);">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <div class="form-container">
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-mb-6 col-lg-6">
+                                            <label for="username" class="custom-label">Username</label>
+                                            <input type="text" class="form-control" id="id_username" name="username"
+                                                value="{{ form.username.value|default_if_none:'' }}"
+                                                style="height: 50px; border-radius: 14px;" placeholder="Ackon" required>
+                                        </div>
+                                        <div class="col-12 col-mb-6  col-lg-6">
+                                            <label for="email" class="custom-label">Email</label>
+                                            <input type="email" class="form-control" id="id_email" name="email"
+                                                value="{{ form.email.value|default_if_none:'' }}"
+                                                placeholder="admin@gmail.com" style="height: 50px; border-radius: 14px;"
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-mb-6 col-lg-6">
+                                            <label for="location" class="custom-label">Location</label>
+                                            <select class="form-select" id="location" name="location" style="height: 50px; border-radius: 14px;">
+                                                {% for location in locations %}
+                                                    <option value="{{ location.id }}" {% if user.location.id == location.id %}selected{% endif %}>
+                                                        {{ location.name }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="col-12 col-mb-6 col-lg-6">
+                                            <label for="fullname" class="custom-label">Full Name</label>
+                                            <input type="text" class="form-control" id="id_full_name" name="full_name"
+                                                   value="{{ form.full_name.value|default_if_none:'' }}" style="height: 50px; border-radius: 14px;" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12 col-mb-6  col-lg-6 d-flex justify-content-center align-items-center gap-4">
+                                            <div class="form-check me-3">
+                                                <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin"
+                                                    {% if form.is_admin.value %}checked{% endif %}>
+                                                <label for="is_admin" class="custom-label">Is Admin</label>
+                                            </div>
+                                            <div class="form-check me-3">
+                                                <input type="checkbox" class="form-check-input" id="is_registry" name="is_registry"
+                                                    {% if form.is_registry.value %}checked{% endif %}>
+                                                <label for="is_registry" class="custom-label">Is Registry</label>
+                                            </div>
+                                            <div class="form-check me-3">
+                                                <input type="checkbox" class="form-check-input" id="id_is_superadmin" name="is_superadmin"
+                                                    {% if form.is_superadmin.value %}checked{% endif %}>
+                                                <label for="is_superadmin" class="custom-label">Is Superadmin</label>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                    
+                                    <div style="right: 20px; bottom: 20px; position: absolute;">
+                                    
+                                        <input type="submit" value="Update User" class="btn">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    {% include 'components/js.html' %}
+    <script>
+        const checkboxes = document.querySelectorAll('.form-check-input');
+        
+        
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // If the checkbox is checked, uncheck all other checkboxes
+                if (this.checked) {
+                    checkboxes.forEach(otherCheckbox => {
+                        if (otherCheckbox !== this) {
+                            otherCheckbox.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

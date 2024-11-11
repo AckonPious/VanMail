@@ -18,65 +18,174 @@
         .custom-shadow {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 6px 20px rgba(0, 0, 0, 0.19);
         }
-
         .btn {
+            border: 1px solid white;
+            border-radius: 5px;
+            color: #fff;
             background-color: #008080;
-            padding: 10px 18px;
-            justify-content: center;
-            align-items: center;
-            border-radius: 12px;
-            color: white;
-            font-family: 'Nunito Sans';
-            font-weight: 600;
-        }
-
-        .noofmsils {
-            font-family: 'Nunito Sans';
-            font-weight: 600;
-            font-size: 18px;
+            padding: 10px 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .btn:hover {
             background-color: #007070;
             color: white;
-            text-decoration: none;
+            box-shadow: 0px 4px 8px rgba(0, 128, 128, 0.3); /* Adds a soft shadow */
+            transform: translateY(-2px); /* Slight lift effect */
         }
 
+        .noofmsils {
+            font-family: 'Nunito Sans';
+            font-weight: 600;
+            color: #3F4753;
+            font-size: 16px;
+        }
+        
         .custom-label {
             color: #3F4753;
-            font-family: "Nunito Sans";
-            font-size: 17px;
+            font-family: 'Nunito Sans';
+            font-size: 15px;
             font-style: normal;
             font-weight: 600;
-            line-height: 24px;
+            letter-spacing: 0.06rem;
+            line-height: 25.6px;
+        }
+
+        h2{
+            font-family: 'Nunito Sans';
+            line-height: 32.4px; 
+            font-weight: 600; 
+            font-style: normal;
+            font-size: 24px; 
+            color: #008080 !important;
         }
 
         table {
             border-collapse: collapse;
-            font-family: "Nunito Sans", sans-serif;
-            font-size: 16px;
-            font-weight: 500;
             text-align: center;
             line-height: 24px;
         }
 
         thead th {
-            padding: 14px;
-            font-size: 18px;
-            background-color: whitesmoke;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            color: #008080 !important;
+            font-weight: 700;
+            font-style: normal;
+            letter-spacing: 0.08rem;
+        }
+
+        td {
+            font-family: "Nunito Sans";
+            color: #475467 !important;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            letter-spacing: 0.06rem;
+            line-height: 22.4px; 
         }
 
         td a img {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             transition: transform 0.3s ease;
         }
 
         td a img:hover {
-            transform: scale(1.1);
+            transform: scale(1.5);
         }
+
+        .check {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #007070;;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .check:checked {
+            background-color: #007070;
+            border-color: #007070;
+            position: relative;
+        }
+
+        .check:checked::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 7px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .custom-a {
+            font-family: 'Nunito Sans', sans-serif;
+            line-height: 32.4px;
+            font-weight: 600;
+            font-style: normal;
+            font-size: 16px;
+            letter-spacing: 0.06rem;
+            color: #008080;
+            text-decoration: none;
+            padding: 8px 16px;
+            
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .custom-a i {
+          margin-right: 8px; /* Add spacing between icon and text */
+        }
+
+        .custom-a:hover {
+          
+          color: #008080;
+          box-shadow: 0px 4px 8px rgba(0, 128, 128, 0.3);
+          transform: translateY(-2px);
+        }
+
+        .custom-button {
+            font-family: 'Nunito Sans', sans-serif;
+            line-height: 32.4px;
+            font-weight: 600;
+            font-style: normal;
+            font-size: 16px;
+            letter-spacing: 0.06rem;
+            color: #008080;
+            background-color: #fff;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #008080;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .custom-button i {
+            margin-right: 0.5rem;
+        }
+
+        .custom-button:hover {
+          background-color: #008080;
+          color: white;
+          box-shadow: 0px 4px 8px rgba(0, 128, 128, 0.3);
+          transform: translateY(-2px);
+        }
+
+
     </style>
 
 </head>
@@ -98,8 +207,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h2 style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080"
-                                    ;>Add New Mail</h2>
+                                <h2>Add New Mail</h2>
                                 <div class="d-flex">
                                     <div>
                                         <img src="{% static 'asset/img/bg.png' %}" alt="Step 1">
@@ -110,20 +218,18 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-12"
                                 style=" background-color: rgb(215,229,229); padding: 60px;">
                                 <div style="padding-bottom: 20px;">
-                                    <a href="{% url 'mail_boxes'  %}" style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 20px; color: #008080; text-decoration: none;"><i
-                                            class="fas fa-arrow-left"></i> Back</a>
+                                    <a href="{% url 'mail_boxes'  %}" class="custom-a"><i class="fas fa-arrow-left"></i> Back</a>
                                 </div>
                                 <div class="row">
                                     <div class="col-4">
                                         <div class="card p-5 rounded-4 custom-shadow" style="height: 600px;">
-                                            <form action="{% url 'add_individual_mail' mailbox.id %}" method="post">
+                                            <form action="" method="post">
                                                 {% csrf_token %}
-                                                {% if form.errors %}
+                                                <!-- {% if form.errors %}
                                                 <div class="alert alert-danger">
                                                     <ul>
                                                         {% for field in form %}
@@ -136,14 +242,26 @@
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
-                                                {% endif %}
+                                                {% endif %} -->
                                                 <div class="mb-4">
                                                     <label for="individual_mail_id" class="form-label custom-label">Mail
                                                         ID</label>
                                                     <input type="text" class="form-control" id="individual_mail_id"
                                                         value="{{ form.individual_mail_id.value|default_if_none:'' }}"
-                                                        name="individual_mail_id" style="width: 50%;" readonly>
+                                                        name="individual_mail_id" style="width: 200px;" readonly>
                                                 </div>
+                                                <div class="mb-4" style="display: flex; gap: 10px; align-items: center;">
+                                                    <div style="display: flex; align-items: center; justify-items: center;">
+                                                        <input class="check" type="checkbox" name="is_package" id="id_is_package">
+                                                        <label class="custom-label" for="id_is_package" style="margin-left: 7px;">Is Package</label>
+                                                    </div> 
+
+                                                    <div style="display: flex; align-items: center; justify-items: center;">
+                                                        <input class="check" type="checkbox" name="recalled" id="id_recalled">
+                                                        <label class="custom-label" for="id_recalled" style="margin-left: 7px;">Recall</label>
+                                                    </div> 
+                                                </div>
+                                                
                                                 <div class="mb-4">
                                                     <label for="mailDescription" class="form-label custom-label">Mail
                                                         Description</label>
@@ -163,9 +281,11 @@
                                                         id="priority_high" value="High Priority" 
                                                         {% if form.priority_level.value == "High Priority" %}checked{% endif %}>
                                                     <label class="form-check-label custom-label" for="priority_high">High Priority</label>
-                                                </div>                                                
-                                                <div class="position-absolute" style="bottom: 15px; right: 20px;">
-                                                    <input type="submit" value="Save as Draft" class="btn">
+                                                </div>                                               
+                                                <div class="position-absolute" style="bottom: 13px; right: 20px;">
+                                                    <button type="submit" class="custom-button">
+                                                        <i class="fas fa-plus"></i>Add Mail
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -179,7 +299,8 @@
                                                         <tr>
                                                             <th>Mail_ID</th>
                                                             <th>Description</th>
-                                                            <th>Priority Level</th>
+                                                            <th>Priority</th>
+                                                            <th>Type</th>
                                                             <th>Action</th>
                                                         </tr>
                                                     </thead>
@@ -187,28 +308,24 @@
                                                         {% for mail in page_obj %}
                                                         <tr>
                                                             <td>{{ mail.individual_mail_id }}</td>
-                                                            <td>{{ mail.mail_description}}</td>
+                                                            <td>{{ mail.mail_description|truncatechars:20 }}</td>
                                                             <td>{{ mail.priority_level}}</td>
+                                                            <td>{% if mail.is_package %} Package {% else %} Letter {% endif %}</td>
                                                             <td style="text-align: center;">
-                                                                <a href="">
+                                                                <a href="{% url 'update_individual_mail' mail.pk %}">
                                                                     <img src="{% static 'asset/img/pen.png' %}" alt=""
                                                                         style="margin-right: 4px;">
                                                                 </a>
-                                                                <a href="">
-                                                                    <img src="{% static 'asset/img/delete.png' %}"
-                                                                        alt="" style="margin-left: 4px;">
-                                                                </a>
                                                             </td>
-
                                                         </tr>
                                                         {% endfor %}
                                                     </tbody>
                                                 </table>
                                                 <div class="position-absolute noofmsils"
                                                     style="bottom: 70px; left: 20px;">
-                                                    <label for="totalMails" class="form-label">No of Mails</label>
+                                                    <label for="totalMails" class="form-label">Total Mails</label>
                                                     <input type="text" class="form-control" id="totalMails"
-                                                        value="{{mailbox.number_of_mails}}" style="width: 20%;"
+                                                        value="{{mailbox.number_of_mails}}" style="width: 30%;"
                                                         readonly>
                                                 </div>
                                                 <div class="position-absolute" style="bottom: 70px; right: 20px;">
@@ -218,7 +335,6 @@
                                                 </div>
                                                     
                                                 </div>
-
                                                 <nav aria-label="Page navigation example"
                                                     style="position: absolute; bottom: 10px; left: 0; right: 0;">
                                                     <ul class="pagination justify-content-center">
@@ -262,7 +378,6 @@
                                                         {% endif %}
                                                     </ul>
                                                 </nav>
-
                                             </div>
                                         </div>
                                     </div>

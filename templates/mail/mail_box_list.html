@@ -16,21 +16,68 @@
 
   <style>
     table {
-      border-collapse: collapse;
-      font-family: "Nunito Sans", sans-serif;
-      font-size: 16px;
-      font-weight: 500;
-      text-align: center;
-      line-height: 24px;
-    }
+            border-collapse: collapse;
+            text-align: center;
+            line-height: 24px;
+        }
 
-    thead th {
-      padding: 14px;
-      font-size: 18px;
-      background-color: #d7e5e5 !important;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
+        thead th {
+            font-family: 'Nunito Sans';
+            font-size: 16px;
+            color: #008080 !important;
+            background-color: #d7e5e5 !important;
+            font-weight: 700 !important;
+            font-style: normal;
+            letter-spacing: 0.08rem;
+        }
+
+        td {
+          font-family: "Nunito Sans";
+          color: #475467 !important;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 600;
+          letter-spacing: 0.06rem;
+          line-height: 22.4px; 
+        }
+
+        h2{
+          font-family: 'Nunito Sans';
+            line-height: 32.4px; 
+            font-weight: 600; 
+            font-style: normal;
+            font-size: 24px; 
+            letter-spacing: 0.06rem;
+            color: #008080 !important;
+        }
+        .custom-a {
+            font-family: 'Nunito Sans', sans-serif;
+            line-height: 32.4px;
+            font-weight: 600;
+            font-style: normal;
+            font-size: 16px;
+            letter-spacing: 0.06rem;
+            color: #008080;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #008080;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .custom-a i {
+          margin-right: 8px; /* Add spacing between icon and text */
+        }
+
+        .custom-a:hover {
+          background-color: #008080;
+          color: white;
+          box-shadow: 0px 4px 8px rgba(0, 128, 128, 0.3);
+          transform: translateY(-2px);
+        }
   </style>
 </head>
 
@@ -56,14 +103,10 @@
         <div class="container-fluid">
           <div class="row">
             <div class="col-12">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2
-                  style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080"
-                  ;>Mailbag List</h2>
+              <div class="d-flex justify-content-between align-items-center mb-4 custom-div">
+                <h2>Mailbags</h2>
                 <span>
-                  <a href="{% url 'add_new_mailbox' %}"
-                    style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 20px; color: #084444"
-                    ;><i class="fas fa-plus"></i>Add Mailbag</a>
+                  <a href="{% url 'add_new_mailbox' %}" class="custom-a"><i class="fas fa-plus"></i>Add Mailbag</a>
                 </span>
               </div>
             </div>
@@ -74,7 +117,7 @@
                     <thead>
                       <tr>
                         <th>MailBox</th>
-                        <th>Handling Officer</th>
+                        <th>Mail Rep</th>
                         <th>Status</th>
                         <th>From</th>
                         <th>To</th>
@@ -118,12 +161,12 @@
                         <thead>
                           <tr>
                             <th>MailBox</th>
-                            <th>Handling Officer</th>
+                            <th>Mail Rep</th>
                             <th>Status</th>
                             <th>From</th>
                             <th>To</th>
-                            <th>Created_at</th>
-                            <th>Updated_at</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -216,14 +259,14 @@
       font-family: 'Arial', sans-serif;
       font-size: 14px;
       font-weight: 500;
-      color: #007bff;
-      background-color: #f8f9fa;
-      border: 1px solid #dee2e6;
+      color: #008080;
+      background-color: #fff;
+      border: 1px solid #008080;
       border-radius: 5px;
       text-decoration: none;
       transition: background-color 0.3s, color 0.3s;
       cursor: pointer;
-    }
+    } 
 
     .c-paginate i {
       font-size: 12px;
@@ -256,7 +299,6 @@
     }
 
     .paginate_button.current {
-      color: white;
       font-weight: bold;
       border-radius: 5px;
       padding: 6px 12px;
@@ -339,10 +381,12 @@
 
     /* Styling for the label */
     label {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito', sans-serif;
       font-size: 14px;
-      color: #333;
+      font-weight: 500;
+      color: #475467;
       display: flex;
+      letter-spacing: 0.06rem;
       align-items: center;
       gap: 8px;
     }

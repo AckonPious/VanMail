@@ -10,17 +10,10 @@
     <meta name="author" content="">
 
     <title>Dashboard</title>
-
     {% include 'components/css.html' %}
     <style>
         body {
-            font-family: "Nunito Sans";
-        }
-
-        .btn:hover {
-            background-color: #007070;
-            color: white;
-            text-decoration: none;
+            font-family: 'Nunito Sans';
         }
 
         .btn {
@@ -30,80 +23,96 @@
             align-items: center;
             border-radius: 12px;
             color: white;
-            font-family: 'Nunito Sans';
+            letter-spacing: 0.06rem;
             font-weight: 600;
+        }
+
+        .btn:hover {
+            background-color: #007070;
+            color: white;
+
+            text-decoration: none;
+        }
+
+        .custom-label {
+            color: #3F4753;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 600;
+            letter-spacing: 0.06rem;
+            line-height: 25.6px;
+        }
+
+        h2 {
+            font-family: 'Nunito Sans';
+            line-height: 32.4px;
+            font-weight: 600;
+            font-style: normal;
+            font-size: 24px;
+            color: #008080 !important;
         }
 
         table {
             border-collapse: collapse;
-            font-family: "Nunito Sans", sans-serif;
-            font-size: 16px;
-            font-weight: 500;
             text-align: center;
             line-height: 24px;
         }
 
         thead th {
-            padding: 14px;
-            font-size: 18px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-family: 'Nunito Sans';
+            font-size: 14px;
+            color: #008080 !important;
+            font-weight: 700;
+            font-style: normal;
+            letter-spacing: 0.08rem;
         }
 
-        td a img {
-            width: 20px;
-            height: 20px;
-            transition: transform 0.3s ease;
+        td {
+            font-family: "Nunito Sans";
+            color: #475467 !important;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 600;
+            letter-spacing: 0.06rem;
+            line-height: 22.4px;
         }
 
-        td a img:hover {
-            transform: scale(1.1);
-        }
 
         /* The Modal (background) */
         .modal {
             display: none;
-            /* Hidden by default */
             position: fixed;
-            /* Stay in place */
             z-index: 1;
-            /* Sit on top */
             padding-top: 200px;
-            /* Location of the box */
             left: 0;
             top: 0;
             width: 100%;
-            /* Full width */
             height: 100%;
-            /* Full height */
             overflow: auto;
-            /* Enable scroll if needed */
-            background-color: rgb(0, 0, 0);
-            /* Fallback color */
             background-color: rgba(0, 0, 0, 0.4);
-            /* Black w/ opacity */
+
         }
 
         /* Modal Content */
         .modal-content {
-            background-color: #fefefe;
+
+            background-color: whitesmoke;
             margin: auto;
             padding: 20px;
-            border: 1px solid #888;
-            width: 60%;
+            width: 400px;
         }
 
-        .custom-label {
-            color: #3F4753;
-            font-size: 17px;
-            font-style: normal;
+        .modal-text {
+            font-family: 'Nunito Sans';
+            line-height: 1.2;
             font-weight: 600;
-            line-height: 24px;
+            font-size: 16px;
+            margin-top: 5px;
         }
 
         /* The Close Button */
         .close {
-            color: #aaaaaa;
+            color: #008080;
             float: right;
             font-size: 28px;
             font-weight: bold;
@@ -111,12 +120,10 @@
 
         .close:hover,
         .close:focus {
-            color: #000;
+            color: #008080;
             text-decoration: none;
             cursor: pointer;
         }
-
-        
     </style>
 
 </head>
@@ -146,9 +153,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h2 style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080"
-                                    ;>Final Submission</h2>
-
+                                <h2>Final Submission</h2>
                             </div>
                         </div>
 
@@ -157,8 +162,6 @@
                                 <div class="col-3">
                                     <div class="card p-5 rounded-4 custom-shadow" style="height: 600px;">
                                         <div>
-
-
                                             <div class="mb-4">
                                                 <form action="" method="post">
                                                     {% csrf_token %}
@@ -166,7 +169,7 @@
                                                     <select class="form-select" id="id_assigned_to" name="assigned_to"
                                                         style="height: 50px; border-radius: 14px;">
                                                         {% for driver in drivers %}
-                                                        <option  value="{{ driver.id }}">{{ driver.name }}</option>
+                                                        <option value="{{ driver.id }}">{{ driver.name }}</option>
                                                         {% endfor %}
                                                     </select>
 
@@ -177,14 +180,12 @@
                                                         <!-- Modal content -->
                                                         <div class="modal-content">
                                                             <span class="close">&times;</span>
-                                                            <p>Are you sure you want to subit this mailbox? <br>
-                                                                There will be reversal after submission. make sure all
-                                                                data is
-                                                                correct and intact.
-                                                            </p>
+                                                            <div class="modal-text">
+                                                                <p>Are you sure you want to submit this mails?</p>
+                                                                <p>Submission is final, ensure all data is correct.</p>
+                                                            </div>
 
-                                                            <input class="btn btn-primary" type="submit"
-                                                                value="Final Submission" class="btn btn-primary mt-2">
+                                                            <input class="btn" type="submit" value="Submit">
                                                         </div>
                                                     </div>
                                                 </form>
@@ -205,7 +206,7 @@
                                                         <th>Priority Level</th>
                                                         <th>Created_at</th>
                                                         <th>Updated_at</th>
-                                                        <th>Action</th>
+                                                        
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -214,62 +215,12 @@
                                                         <td>{{mail.individual_mail_id}}</td>
                                                         <td>{{mail.priority_level}}</td>
                                                         <td>{{mail.created_at | time}}</td>
-                                                        <td>{{mail.updated_at | date}}</td>
-                                                        <td style="text-align: center;">
-                                                            <a href="">
-                                                                <img src="{% static 'asset/img/pen.png' %}" alt=""
-                                                                    style="margin-right: 4px;">
-                                                            </a>
-                                                        </td>
+                                                        <td>{{mail.updated_at | time}}</td>
                                                     </tr>
                                                     {% endfor %}
                                                 </tbody>
                                             </table>
-
-                                            <nav aria-label="Page navigation example"
-                                                style="position: absolute; bottom: 10px; left: 0; right: 0;">
-                                                <ul class="pagination justify-content-center">
-                                                    {% if page_obj.has_previous %}
-                                                    <li class="page-item">
-                                                        <a class="page-link" href="?page=1" aria-label="First">
-                                                            <span aria-hidden="true">&laquo;&laquo;</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="page-item">
-                                                        <a class="page-link"
-                                                            href="?page={{ page_obj.previous_page_number }}"
-                                                            aria-label="Previous">
-                                                            <span aria-hidden="true">&laquo;</span>
-                                                        </a>
-                                                    </li>
-                                                    {% endif %}
-
-                                                    {% for num in page_obj.paginator.page_range %}
-                                                    <li
-                                                        class="page-item {% if page_obj.number == num %}active{% endif %}">
-                                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                                                    </li>
-                                                    {% endfor %}
-
-                                                    {% if page_obj.has_next %}
-                                                    <li class="page-item">
-                                                        <a class="page-link"
-                                                            href="?page={{ page_obj.next_page_number }}"
-                                                            aria-label="Next">
-                                                            <span aria-hidden="true">&raquo;</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="page-item">
-                                                        <a class="page-link"
-                                                            href="?page={{ page_obj.paginator.num_pages }}"
-                                                            aria-label="Last">
-                                                            <span aria-hidden="true">&raquo;&raquo;</span>
-                                                        </a>
-                                                    </li>
-                                                    {% endif %}
-                                                </ul>
-                                            </nav>
-                                        </div>
+                                        </div>                                     
                                     </div>
                                 </div>
                             </div>

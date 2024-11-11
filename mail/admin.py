@@ -6,3 +6,5 @@ from .models import *
 admin.site.register(MailBox)
 admin.site.register(AssignedTo)
 admin.site.register(Mail)
+admin.site.register(ModelInherit)
+admin.site.register(Notification)

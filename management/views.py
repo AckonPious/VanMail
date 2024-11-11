@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from authentication.models import User
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView, View
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView, View,TemplateView
 from mail.models import *
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -17,8 +17,23 @@ from collections import defaultdict
 from django.core.paginator import Paginator
 from packages.decorators import *
 from django.contrib import messages
+from django.db.models import Q
+from django.views.generic import FormView
+from django.http import HttpResponseRedirect
 
 
+class MarkAsReadView(LoginRequiredMixin, View):
+    def post(self, request, notification_id):
+        notification = Notification.objects.filter(id=notification_id, location=request.user.location).first()
+        if notification:
+            notification.read = True  
+            notification.save()
+            messages.success(request, 'Notification marked as read.')
+
+        referer = request.META.get('HTTP_REFERER', '/')  
+        return HttpResponseRedirect(referer)
+
+@method_decorator([login_required, admin_required], name='dispatch')
 class LogEntryListView(LoginRequiredMixin, ListView):
     model = LogEntry
     template_name = 'logs/log_entries_list.html'
@@ -92,13 +107,18 @@ class UserUpdateView(UpdateView):
     model = User
     template_name = 'authentication/update_user.html'
     context_object_name = 'user'
-    fields = ['username', 'is_admin', 'is_registry', 'email', 'full_name']
+    fields = ['username', 'is_admin', 'is_registry', 'is_superadmin', 'email', 'full_name', 'location']
     success_url = reverse_lazy('users')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['locations'] = Location.objects.all()  
+        return context
 
     def form_valid(self, form):
         user = form.save()
         log_action(self.request.user.pk, user, CHANGE, f"{self.request.user.full_name} updated {form.instance.full_name} in the system")
-        messages.success(self.request, 'User Updated successfully')
+        messages.success(self.request, 'User updated successfully')
         return super().form_valid(form)
 
 # Location CRUD
@@ -279,11 +299,34 @@ class AddIndividualMailView(LoginRequiredMixin, CreateView):
         mailbox = self.get_mailbox()
         context['mailbox'] = mailbox
         individual_mails = mailbox.individual_mails.all().order_by('-created_at')
-        paginator = Paginator(individual_mails, 8)  
+        paginator = Paginator(individual_mails, 7)  
         page_number = self.request.GET.get('page')
         page_obj = paginator.get_page(page_number)
         context['page_obj'] = page_obj
         return context
+    
+@method_decorator([login_required, registry_required], name='dispatch')
+class UpdateIndividualMailView(LoginRequiredMixin, UpdateView):
+    model = Mail
+    form_class = MailsForm
+    template_name = 'mail/update_individual_mail.html'
+
+
+    def form_valid(self, form):
+        individual_mail = form.save(commit=False)
+        individual_mail.individual_mail_id = form.cleaned_data['individual_mail_id']
+        individual_mail.save()
+        log_action(self.request.user.pk, individual_mail, CHANGE, f"{self.request.user.full_name} updated {form.instance.individual_mail_id} to the system")  # Log the action
+        messages.success(self.request, 'Mail updated successfully')
+        return redirect('add_individual_mail', mail_id=individual_mail.mail_box.id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        mail = self.get_object()
+        context['mail'] = mail
+       
+        return context
+    
 
 @method_decorator([login_required, registry_required], name='dispatch')
 class MailBoxListView(ListView):
@@ -326,9 +369,10 @@ class FinalMailSubmit(View):
             submission = form.save(commit=False)
             submission.mail_status = "In Transit"
             submission.save()
-            log_action(request.user.pk, submission, CHANGE, f"{self.request.user.full_name} submitted {submission.mail_id} to {submission.to_location.name}")  # Log the action
+            log_action(request.user.pk, submission, CHANGE, f"{self.request.user.full_name} submitted {submission.mail_id} to {submission.to_location.name}")  
             messages.success(self.request, 'Mailbox submitted successfully')
             return redirect('mail_boxes')
+    
 
 @method_decorator([login_required, registry_required], name='dispatch')
 class ReceiveMailView(View):
@@ -339,51 +383,89 @@ class ReceiveMailView(View):
         mailbox = None
         form = None
         mails = []
+        received_count = 0
+        missing_count = 0
+
         if mailbox_id:
             mailbox = get_object_or_404(MailBox, mail_id=mailbox_id)
             form = MailReceiveForm(mail_box=mailbox)
             mails = Mail.objects.filter(mail_box=mailbox)
 
+            received_count = mails.filter(is_received=True).count()
+            missing_count = mails.filter(is_received=False).count()
+
         return render(request, self.template_name, {
             'mailbox': mailbox,
             'form': form,
-            'mails': mails
+            'mails': mails,
+            'received_count': received_count,
+            'missing_count': missing_count,
         })
 
     def post(self, request, *args, **kwargs):
         mailbox_id = request.GET.get('mailbox_id', None)
         mailbox = get_object_or_404(MailBox, mail_id=mailbox_id)
-        form = MailReceiveForm(request.POST, mail_box=mailbox)
+        
+        selected_mail_ids = request.POST.getlist('mails')  
+        mails = Mail.objects.filter(mail_box=mailbox)
+        received_count = 0  
+        missing_count = 0   
 
-        if form.is_valid():
-            selected_mails = form.cleaned_data['mails']
-            selected_mails.update(is_received=True)
-            mailbox.mail_status = "Received"
-            mailbox.save()
-            log_action(request.user.pk, mailbox, CHANGE, f"{self.request.user.full_name} received {mailbox.mail_id} from {mailbox.from_location}")  # Log the action
-            messages.success(self.request, 'Mailbox marked as received successfully')
-            
-            return redirect('mail_boxes')
+        for mail in mails:
+            if str(mail.pk) in selected_mail_ids:  
+                mail.is_received = False  
+                missing_count += 1
+            else:
+                mail.is_received = True  
+                received_count += 1
+            mail.save()
 
-        return render(request, self.template_name, {
-            'mailbox': mailbox,
-            'form': form,
-        })
+        mailbox.mail_status = "Received" 
+        mailbox.save()
+
+        log_action(request.user.pk, mailbox, CHANGE, f"{self.request.user.full_name} received {mailbox.mail_id} from {mailbox.from_location}")
+
+        messages.success(request, f'{received_count} mails received, {missing_count} mails marked as missing.')
+
+        return redirect('mail_boxes') 
+    
+    
 
 @method_decorator([login_required, registry_required], name='dispatch')
 class ManageLocationMails(View):
     template_name = 'mail/manage_mails.html'
 
     def get(self, request, *args, **kwargs):
-        location_id = self.kwargs.get('location_id')
-        location = get_object_or_404(Location, pk=location_id)
-        mailboxes = MailBox.objects.filter(from_location=location, mail_status="Received")
+        from_location_id = self.kwargs.get('location_id')
+        from_location = get_object_or_404(Location, pk=from_location_id)
+        user_location = request.user.location
+
+        if request.user.is_admin or request.user.is_superadmin:
+            if from_location == user_location:
+                mailboxes = MailBox.objects.filter(
+                    from_location=user_location,
+                    mail_status="Received"
+                )
+            else:
+                mailboxes = MailBox.objects.filter(
+                    from_location=from_location,
+                    to_location=user_location,
+                    mail_status="Received"
+                )
+        else:
+            mailboxes = MailBox.objects.filter(
+                from_location=from_location,
+                to_location=user_location,
+                mail_status="Received"
+            )
 
         context = {
             'mailboxes': mailboxes,
-            'location': location,
+            'from_location': from_location,
+            'user_location': user_location,
         }
         return render(request, self.template_name, context)
+
 
 @method_decorator([login_required, registry_required], name='dispatch')
 class ReceivedMailboxMails(DetailView):
@@ -415,10 +497,17 @@ class ManageMailSummary(View):
             if to_location not in mailboxes_sent:
                 mailboxes_sent[to_location] = []
             mailboxes_sent[to_location].append(mailbox)
-
+  
         mailboxes_received = {}
         for mailbox in received_mailboxes:
             from_location = mailbox.from_location
+
+            received_count = mailbox.individual_mails.filter(is_received=True).count()
+            missing_count = mailbox.individual_mails.filter(is_received=False).count()
+
+            mailbox.received_count = received_count
+            mailbox.missing_count = missing_count
+
             if from_location not in mailboxes_received:
                 mailboxes_received[from_location] = []
             mailboxes_received[from_location].append(mailbox)
@@ -430,3 +519,6 @@ class ManageMailSummary(View):
         }
 
         return render(request, self.template_name, context)
+
+
+    

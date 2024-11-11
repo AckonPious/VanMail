@@ -1,6 +1,7 @@
 from django.db import models
 from authentication.models import User
 from authentication.models import Location 
+from django.conf import settings
 
 class ModelInherit(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,6 +34,14 @@ class MailBox(ModelInherit):
     
     def number_of_mails(self):
         return self.individual_mails.count()
+    
+    def received_count(self):
+        # Counts mails marked as received (is_received=True)
+        return self.individual_mails.filter(is_received=True).count()
+
+    def missing_count(self):
+        # Counts mails marked as missing (is_received=False)
+        return self.individual_mails.filter(is_received=False).count()
         
 
 
@@ -44,6 +53,19 @@ class Mail(ModelInherit):
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name='created_by', blank=False) 
     is_package = models.BooleanField(default=False)
     is_received = models.BooleanField(default=False)
+    recalled = models.BooleanField(default=False)
+    
+    
+    def __str__(self):
+        return f"{self.individual_mail_id}"
+
+
+class Notification(models.Model):
+    location = models.ForeignKey(Location, on_delete=models.PROTECT)  
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.individual_mail_id}" 
+        return f"Notification for {self.location}: {self.message}"
+    

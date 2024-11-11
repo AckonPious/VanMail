@@ -15,24 +15,51 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
 
     <style>
+        h2{
+            font-family: 'Nunito Sans';
+            line-height: 32.4px; 
+            font-weight: 600; 
+            font-style: normal;
+            font-size: 24px; 
+            color: #008080 !important;
+        }
         table {
-            border-collapse: collapse;
-            font-family: "Nunito Sans", sans-serif;
-            font-size: 16px;
-            font-weight: 500;
-            text-align: center;
-            line-height: 24px;
+           border-collapse: collapse;
+           text-align: center;
+           line-height: 24px;
+       }
+
+       thead th {
+           font-family: 'Nunito Sans';
+           font-size: 16px;
+           background-color: #d7e5e5 !important;
+           color: #008080 !important;
+           font-weight: 700;
+           font-style: normal;
+           letter-spacing: 0.08rem;
+       }
+
+       td {
+           font-family: "Nunito Sans";
+           color: #475467 !important;
+           font-size: 14px;
+           font-style: normal;
+           font-weight: 600;
+           letter-spacing: 0.06rem;
+           line-height: 22.4px; 
+       }
+
+       td a img {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease;
         }
 
-        thead th {
-            padding: 14px;
-            font-size: 18px;
-            background-color: #d7e5e5 !important;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        td a img:hover {
+            transform: scale(1.5);
         }
 
-    </style>
+   </style>
 
 </head>
 
@@ -59,8 +86,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <h2 style="font-family: 'Nunito Sans'; line-height: 32.4px; font-weight: 600; font-style: normal;font-size: 24px; color: #008080"
-                                    ;>System Users</h2>
+                                <h2>System Users</h2>
                             </div>
                         </div>
                         <div class="col-12" style="background-color: rgb(215,229,229); padding: 60px;">
@@ -75,6 +101,7 @@
                                                 <th>Email</th>
                                                 <th>Location</th>
                                                 <th>Role</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -88,9 +115,16 @@
                                                 <td>Admin</td>
                                                 {% elif user.is_registry %}
                                                 <td>Registry</td>
+                                                {% elif user.is_superadmin %}
+                                                <td>Superadmin</td>
                                                 {% else %}
                                                 <td>None</td>
                                                 {% endif %}
+                                                <td>
+                                                    <a href="{% url 'user_update' user.pk %}">
+                                                        <img src="{% static 'asset/img/pen.png' %}" alt="" style="margin-right: 4px;">
+                                                    </a>
+                                                </td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>
@@ -131,6 +165,8 @@
             });
         });
 
+        
+
     </script>
     <style>
         .c-paginate {
@@ -140,20 +176,20 @@
             font-family: 'Arial', sans-serif;
             font-size: 14px;
             font-weight: 500;
-            color: #007bff;
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
+            color: #008080;
+            background-color: #fff;
+            border: 1px solid #008080;
             border-radius: 5px;
             text-decoration: none;
             transition: background-color 0.3s, color 0.3s;
             cursor: pointer;
-        }
+        } 
 
         .c-paginate i {
             font-size: 12px;
             margin-right: 4px;
             transition: transform 0.3s;
-        }
+         }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
             color: rgb(0, 0, 0) !important;
@@ -263,10 +299,12 @@
 
         /* Styling for the label */
         label {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Nunito', sans-serif;
             font-size: 14px;
-            color: #333;
+            font-weight: 500;
+            color: #475467;
             display: flex;
+            letter-spacing: 0.06rem;
             align-items: center;
             gap: 8px;
         }

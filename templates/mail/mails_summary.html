@@ -11,17 +11,16 @@
     <title>Dashboard</title>
 
     {% include 'components/css.html' %}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
     <style>
         body {font-family: Arial;}
         
-        /* Style the tab */
         .tab {
           overflow: hidden;
-          border: 1px solid #ccc;
-          background-color: #f1f1f1;
+          border-radius: 5px;
+          background-color: #f8f9fc;
         }
         
-        /* Style the buttons inside the tab */
         .tab button {
           background-color: inherit;
           float: left;
@@ -33,111 +32,89 @@
           font-size: 17px;
         }
         
-        /* Change background color of buttons on hover */
-        .tab button:hover {
-          background-color: #ddd;
-        }
-        
-        /* Create an active/current tablink class */
         .tab button.active {
-          background-color: #ccc;
+          background-color: #008080;
+          border-radius: 5px;
         }
         
-        /* Style the tab content */
         .tabcontent {
           display: none;
           padding: 6px 12px;
           border: 1px solid none;
           border-top: none;
         }
-        </style>
+        
+        h2 {
+            font-family: 'Nunito Sans';
+            line-height: 32.4px; 
+            font-weight: 600; 
+            font-size: 24px; 
+            color: #008080 !important;
+        }
+        
+        table {
+            border-collapse: collapse;
+            text-align: center;
+            line-height: 24px;
+        }
+
+        thead th {
+            font-family: 'Nunito Sans';
+            font-size: 16px;
+            background-color: #d7e5e5 !important;
+            color: #008080 !important;
+            font-weight: 700;
+            letter-spacing: 0.08rem;
+        }
+
+        td {
+            font-family: "Nunito Sans";
+            color: #475467 !important;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.06rem;
+            line-height: 22.4px; 
+        }
+    </style>
 
 </head>
 
 <body id="page-top">
 
-    <!-- Page Wrapper -->
     <div id="wrapper">
-        <!-- Sidebar1 -->
-            {% include 'components/sidebar.html' %}
-           
-
-        <!-- End of Sidebar1 -->
-
-        <!-- Content Wrapper -->
+        {% include 'components/sidebar.html' %}
+               
         <div id="content-wrapper" class="d-flex flex-column">
-            <!-- Main Content -->
             <div id="content">
-                <!-- Topbar -->
                 {% include 'components/navbar.html' %}
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
-                    <div class="tab">
+                    <div class="tab mb-4">
                         <button class="tablinks" onclick="openCity(event, 'SentMails')" id="defaultOpen">Sent Mails</button>
                         <button class="tablinks" onclick="openCity(event, 'ReceivedMails')">Received Mails</button>
-                      </div>
-                      
-                      <div id="SentMails" class="tabcontent">
+                    </div>
+                    <div id="SentMails" class="tabcontent">
                         {% for to_location, mailboxes in mailboxes_sent.items %}
                         <div class="mt-2">
-                            <h4>From: {{ location.name }} to {{to_location.name}}</h4>
+                            <h4>From: {{ location.name }} to {{ to_location.name }}</h4>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-condensed table-hover display" id="table_id_{{ forloop.counter }}" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>MailBox ID</th>
                                             <th>No of Mail</th>
-                                            <th>Mails Assigned to</th>
-                                            <th>Status</th>
+                                            <th>Date</th>
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for mailbox in mailboxes %}
                                         <tr>
-                                            <td>{{mailbox.mail_id}}</td>
-                                            <td>{{mailbox.individual_mails.count}}</td>
-                                            <td>{{mailbox.assigned_to}}</td>
-                                            <td>
-                                                {{ mailbox.mail_status }}
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        {% endfor %}
-                      </div>
+                                            <td>{{ mailbox.mail_id }}</td>
+                                            <td>{{ mailbox.individual_mails.count }}</td>
+                                            <td>{{ mailbox.updated_at }}</td>
                       
-                      <div id="ReceivedMails" class="tabcontent">
-                        {% for from_location, mailboxes in mailboxes_received.items %}
-                        <div class="mt-2">
-                            <h4>From: {{ from_location.name }} to {{location.name}}</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>MailBox ID</th>
-                                            <th>No of Mail</th>
-                                            <th>Mails Assigned to</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for mailbox in mailboxes %}
-                                        <tr>
-                                            <td>{{mailbox.mail_id}}</td>
-                                            <td>{{mailbox.individual_mails.count}}</td>
-                                            <td>{{mailbox.assigned_to}}</td>
-                                            <td>
-                                                {{ mailbox.mail_status }}
-                                            </td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -145,37 +122,269 @@
                             </div>
                         </div>
                         {% endfor %}
+                    </div>
+                      
+                    <div id="ReceivedMails" class="tabcontent">
+                      {% for from_location, mailboxes in mailboxes_received.items %}
+                      <div class="mt-2">
+                          <h4>From: {{ from_location.name }} to {{ location.name }}</h4>
                       </div>
-                    <!-- Content Row -->
+                      <div class="card-body">
+                          <div class="table-responsive">
+                              <table class="table table-condensed table-hover display" id="table_id1_{{ forloop.counter }}" width="100%" cellspacing="0">
+                                  <thead>
+                                      <tr>
+                                          <th>MailBox ID</th>
+                                          <th>No of Mail</th>
+                                          <th>Date</th>
+                                          <th>Received</th>
+                                          <th>Missing</th>
+                                          
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      {% for mailbox in mailboxes %}
+                                      <tr>
+                                          <td>{{ mailbox.mail_id }}</td>
+                                          <td>{{ mailbox.individual_mails.count }}</td>
+                                          <td>{{ mailbox.updated_at }}</td>
+                                          <td>{{ mailbox.received_count }}</td>
+                                          <td>{{ mailbox.missing_count }}</td>
+                                          
+                                      </tr>
+                                      {% endfor %}
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  
                 </div>
             </div>
         </div>
-        <!-- End of Sidebar2 -->
     </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+    
     {% include 'components/js.html' %}
-    <script>
+    <script src="https://cdn.datatables.net/1.10.4/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript">
         document.getElementById("defaultOpen").click();
         function openCity(evt, cityName) {
-          var i, tabcontent, tablinks;
-          tabcontent = document.getElementsByClassName("tabcontent");
-          for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-          }
-          tablinks = document.getElementsByClassName("tablinks");
-          for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-          }
-          document.getElementById(cityName).style.display = "block";
-          evt.currentTarget.className += " active";
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.className += " active";
         }
-        </script>
-    
-</body>
 
+        $(document).ready(function () {
+        function initDataTable(tableId) {
+            $('#' + tableId).DataTable({
+                "pagingType": "simple_numbers",
+                "language": {
+                    "paginate": {
+                        "previous": "<span class='c-paginate'><i class='fas fa-chevron-left'></i> Previous</span>",
+                        "next": "<span class='c-paginate d-flex gap-2'> <span>Next</span> <i class='fas fa-chevron-right'></i></span>"
+                    }
+                }
+            });
+        }
+
+        // Initialize DataTable for all tables in the Sent Mails tab
+        $('#SentMails table.display').each(function () {
+            var tableId = $(this).attr('id'); // Get the ID of the current table
+            initDataTable(tableId); // Initialize the DataTable
+        });
+
+        // Initialize DataTable for all tables in the Received Mails tab
+        $('#ReceivedMails table.display').each(function () {
+            var tableId = $(this).attr('id'); // Get the ID of the current table
+            initDataTable(tableId); // Initialize the DataTable
+        });
+
+        // Optionally, you can open the first tab by default (if you still need tab functionality)
+        document.getElementsByClassName("tablinks")[0].click();
+    });
+
+
+    </script>
+    <style>
+        .c-paginate {
+          display: inline-flex;
+          align-items: center;
+          padding: 6px 12px;
+          font-family: 'Arial', sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          color: #008080;
+          background-color: #fff;
+          border: 1px solid #008080;
+          border-radius: 5px;
+          text-decoration: none;
+          transition: background-color 0.3s, color 0.3s;
+          cursor: pointer;
+        } 
+    
+        .c-paginate i {
+          font-size: 12px;
+          margin-right: 4px;
+          transition: transform 0.3s;
+        }
+    
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+          color: rgb(0, 0, 0) !important;
+          border: 1px solid #ffffff !important;
+          background-color: #ffffff;
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #585858), color-stop(100%, #111)) !important;
+          background: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+          background: -moz-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+          background: -ms-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+          background: -o-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+          background: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%) !important;
+        }
+    
+        .dataTables_wrapper .dataTables_paginate .paginate_button:active {
+          outline: none;
+          background-color: #ffffff !important;
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2b2b2b), color-stop(100%, #0c0c0c)) !important;
+          background: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+          background: -moz-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+          background: -ms-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+          background: -o-linear-gradient(top, #ffffff 0%, #ffffff 100%) !important;
+          background: linear-gradient(to bottom, #ffffff 0%, #ffffff 100%) !important;
+          box-shadow: inset 0 0 3px #ffffff
+        }
+    
+        .paginate_button.current {
+          font-weight: bold;
+          border-radius: 5px;
+          padding: 6px 12px;
+          text-decoration: none;
+        }
+    
+        table.dataTable thead th,
+        table.dataTable thead td {
+          border: none !important;
+        }
+    
+        table.dataTable.no-footer {
+          border-bottom: 1px solid #ffffff !important;
+        }
+    
+        table.dataTable tbody th,
+        table.dataTable tbody td {
+          padding: 15px 10px !important;
+        }
+    
+        .dataTables_info {
+          display: none !important;
+        }
+    
+        .dataTables_wrapper {
+          padding: 15px 0 !important;
+        }
+    
+        .dataTables_length,
+        .dataTables_filter {
+          padding: 10px !important;
+        }
+    
+        .dataTables_filter {
+          float: none !important;
+        }
+    
+        .dataTables_filter label {
+          float: none !important;
+          display: flex !important;
+          flex-wrap: nowrap;
+          align-items: center;
+          justify-content: center;
+        }
+    
+        .dataTables_paginate {
+          float: none !important;
+          display: flex;
+          justify-content: space-around;
+          padding: 15px 0 0 0;
+          margin-top: 10px;
+        }
+    
+        /* Styling for input type search */
+        input[type="search"] {
+          width: 100%;
+          max-width: 400px;
+          padding: 8px 15px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          font-size: 14px;
+          color: #333;
+          outline: none;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        /* Placeholder text styling */
+        input[type="search"]::placeholder {
+          color: #9E9E9E;
+        }
+    
+    
+        /* Remove inner search icon on Webkit browsers */
+        input[type="search"]::-webkit-search-decoration,
+        input[type="search"]::-webkit-search-cancel-button,
+        input[type="search"]::-webkit-search-results-button,
+        input[type="search"]::-webkit-search-results-decoration {
+          display: none;
+        }
+    
+        /* Styling for the label */
+        label {
+          font-family: 'Nunito', sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+          color: #475467;
+          display: flex;
+          letter-spacing: 0.06rem;
+          align-items: center;
+          gap: 8px;
+        }
+    
+        /* Styling for the select dropdown */
+        select {
+          padding: 5px 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 14px;
+          color: #333;
+          background-color: #fff;
+          outline: none;
+          transition: border-color 0.3s ease;
+        }
+    
+        /* Focus and hover effect for the select */
+        select:focus,
+        select:hover {
+          border-color: #4e73df;
+        }
+    
+        /* Styling for the option elements */
+        option {
+          font-size: 14px;
+          color: #333;
+        }
+
+        table.dataTable.display tbody tr.odd>.sorting_1,table.dataTable.order-column.stripe tbody tr.odd>.sorting_1 {
+        background-color: #fff !important;
+        }
+      </style>
+</body>
 </html>

@@ -51,6 +51,32 @@
         color: white; /* Change text color for visibility */
         text-align: center;
     }
+    .message-list {
+        display: flex;
+        justify-content: center;
+        padding: 1rem;
+        max-width: 600px; /* Constrain width for better readability */
+        margin: 1rem auto; /* Center on the page */
+    }
+
+    .message-list ul {
+        list-style-type: none; /* Remove bullets */
+        padding: 0;
+        margin: 0;
+    }
+
+    .message-list li {
+        padding: 0.75rem 1rem;
+        margin: 0.5rem 0;
+        background-color: #ffffff; /* White background for individual messages */
+        border-radius: 5px;
+        border-left: 4px solid #008080; /* Accent border for emphasis */
+        color: #333;
+        font-family: 'Nunito Sans', sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    }
 </style>
 
 <body>
@@ -77,11 +103,13 @@
                     height: 580px; ">
                     
                     {% if messages %}
-                        <ul>
-                            {% for message in messages %}
-                            <li>{{ message }}</li>
-                            {% endfor %}
-                        </ul>
+                        <div class="message-list ">
+                            <ul>
+                                {% for message in messages %}
+                                <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div> 
                     {% endif %}
                     <form method="POST" action="{% url 'login' %}">
                         {% csrf_token %}
